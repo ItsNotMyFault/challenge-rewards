@@ -1,7 +1,19 @@
 {
   "permissions": {
     "allow": [
-      "Bash(gh auth status)"
+      "Bash(gh auth status)",
+      "Bash(git credential-manager github list)",
+      "Bash(git credential-manager list)",
+      "Bash(git credential-manager github login)",
+      "mcp__claude_ai_Nuxt_UI__get-component",
+      "mcp__claude_ai_Nuxt__get-documentation-page",
+      "mcp__claude_ai_Nuxt_UI__get-documentation-page",
+      "Bash(pnpm add cytoscape)",
+      "mcp__claude_ai_Nuxt_UI__list-getting-started-guides",
+      "Bash(npm install tailwindcss)",
+      "Bash(pnpm add tailwindcss)",
+      "Bash(cat /c/Users/Alexi/Documents/devprojects/test/challenge-rewards/app/plugins/*.ts)",
+      "mcp__claude_ai_Nuxt_UI__search-components-by-category"
     ]
   }
 }

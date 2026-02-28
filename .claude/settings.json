@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx nuxi prepare)",
+      "mcp__claude_ai_Nuxt_UI__get-component-metadata"
+    ]
+  }
+}

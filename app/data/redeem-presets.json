@@ -1,0 +1,387 @@
+{
+  "presets": [
+    {
+      "id": "wear-hat",
+      "rewardName": "Wear a Silly Hat",
+      "type": "timed",
+      "description": "Streamer must wear a ridiculous hat for the duration.",
+      "icon": "i-lucide-crown",
+      "requiredMs": 1800000,
+      "category": "cosmetic"
+    },
+    {
+      "id": "accent-challenge",
+      "rewardName": "Speak in an Accent",
+      "type": "timed",
+      "description": "Streamer must speak in a funny accent.",
+      "icon": "i-lucide-mic",
+      "requiredMs": 600000,
+      "category": "performance"
+    },
+    {
+      "id": "no-backspace",
+      "rewardName": "No Backspace Challenge",
+      "type": "timed",
+      "description": "Type without using backspace or delete.",
+      "icon": "i-lucide-keyboard",
+      "requiredMs": 900000,
+      "category": "challenge"
+    },
+    {
+      "id": "push-ups",
+      "rewardName": "Do Push-Ups",
+      "type": "counter",
+      "description": "Streamer does push-ups on camera.",
+      "icon": "i-lucide-dumbbell",
+      "targetCount": 10,
+      "category": "fitness"
+    },
+    {
+      "id": "squats",
+      "rewardName": "Do Squats",
+      "type": "counter",
+      "description": "Streamer does squats on camera.",
+      "icon": "i-lucide-dumbbell",
+      "targetCount": 15,
+      "category": "fitness"
+    },
+    {
+      "id": "drink-water",
+      "rewardName": "Drink a Glass of Water",
+      "type": "instant",
+      "description": "Hydration check! Drink a full glass of water.",
+      "icon": "i-lucide-droplets",
+      "category": "wellness"
+    },
+    {
+      "id": "stretch-break",
+      "rewardName": "Stretch Break",
+      "type": "timed",
+      "description": "Stand up and do a full body stretch.",
+      "icon": "i-lucide-accessibility",
+      "requiredMs": 120000,
+      "category": "wellness"
+    },
+    {
+      "id": "song-request",
+      "rewardName": "Song Request",
+      "type": "instant",
+      "description": "Play a song chosen by the redeemer.",
+      "icon": "i-lucide-music",
+      "category": "entertainment"
+    },
+    {
+      "id": "shoutout",
+      "rewardName": "Shoutout",
+      "type": "instant",
+      "description": "Give a shoutout to the redeemer on stream.",
+      "icon": "i-lucide-megaphone",
+      "category": "social"
+    },
+    {
+      "id": "emoji-only",
+      "rewardName": "Emoji Only Chat",
+      "type": "timed",
+      "description": "Streamer can only respond with emojis.",
+      "icon": "i-lucide-smile-plus",
+      "requiredMs": 300000,
+      "category": "challenge"
+    },
+    {
+      "id": "wrong-hand",
+      "rewardName": "Play with Wrong Hand",
+      "type": "timed",
+      "description": "Use your non-dominant hand for gaming.",
+      "icon": "i-lucide-hand",
+      "requiredMs": 600000,
+      "category": "challenge"
+    },
+    {
+      "id": "jump-jacks",
+      "rewardName": "Jumping Jacks",
+      "type": "counter",
+      "description": "Do jumping jacks on camera.",
+      "icon": "i-lucide-footprints",
+      "targetCount": 20,
+      "category": "fitness"
+    },
+    {
+      "id": "dad-joke",
+      "rewardName": "Tell a Dad Joke",
+      "type": "instant",
+      "description": "Streamer must tell their best (worst) dad joke.",
+      "icon": "i-lucide-laugh",
+      "category": "entertainment"
+    },
+    {
+      "id": "compliment",
+      "rewardName": "Compliment a Chatter",
+      "type": "instant",
+      "description": "Say something nice about the redeemer.",
+      "icon": "i-lucide-heart",
+      "category": "social"
+    },
+    {
+      "id": "lights-off",
+      "rewardName": "Lights Off Mode",
+      "type": "toggle",
+      "description": "Turn off the room lights until toggled back.",
+      "icon": "i-lucide-lightbulb-off",
+      "category": "cosmetic"
+    },
+    {
+      "id": "webcam-zoom",
+      "rewardName": "Extreme Webcam Zoom",
+      "type": "timed",
+      "description": "Zoom webcam all the way in on your face.",
+      "icon": "i-lucide-zoom-in",
+      "requiredMs": 300000,
+      "category": "cosmetic"
+    },
+    {
+      "id": "random-keybind",
+      "rewardName": "Randomize Keybinds",
+      "type": "timed",
+      "description": "Shuffle your keybinds and try to play.",
+      "icon": "i-lucide-shuffle",
+      "requiredMs": 600000,
+      "category": "challenge"
+    },
+    {
+      "id": "snack-break",
+      "rewardName": "Snack Break",
+      "type": "banked",
+      "description": "Streamer eats a snack on camera. Bank multiple!",
+      "icon": "i-lucide-cookie",
+      "quantity": 3,
+      "category": "wellness"
+    },
+    {
+      "id": "spin-chair",
+      "rewardName": "Spin in Chair",
+      "type": "counter",
+      "description": "Spin around in your chair.",
+      "icon": "i-lucide-rotate-ccw",
+      "targetCount": 5,
+      "category": "entertainment"
+    },
+    {
+      "id": "story-time",
+      "rewardName": "Story Time",
+      "type": "instant",
+      "description": "Tell a personal story or anecdote.",
+      "icon": "i-lucide-book-open",
+      "category": "entertainment"
+    },
+    {
+      "id": "whisper-mode",
+      "rewardName": "Whisper Mode",
+      "type": "timed",
+      "description": "Streamer can only whisper.",
+      "icon": "i-lucide-volume-1",
+      "requiredMs": 300000,
+      "category": "performance"
+    },
+    {
+      "id": "ban-word",
+      "rewardName": "Ban a Word",
+      "type": "timed",
+      "description": "Streamer can't say a specific word chosen by redeemer.",
+      "icon": "i-lucide-ban",
+      "requiredMs": 900000,
+      "category": "challenge"
+    },
+    {
+      "id": "plank",
+      "rewardName": "Hold a Plank",
+      "type": "timed",
+      "description": "Hold a plank position on camera.",
+      "icon": "i-lucide-timer",
+      "requiredMs": 60000,
+      "category": "fitness"
+    },
+    {
+      "id": "bg-change",
+      "rewardName": "Change Background",
+      "type": "toggle",
+      "description": "Switch to a background chosen by the redeemer.",
+      "icon": "i-lucide-image",
+      "category": "cosmetic"
+    },
+    {
+      "id": "truth-dare",
+      "rewardName": "Truth or Dare",
+      "type": "instant",
+      "description": "Answer a truth or complete a dare from the redeemer.",
+      "icon": "i-lucide-flame",
+      "category": "entertainment"
+    },
+    {
+      "id": "slow-motion",
+      "rewardName": "Slow Motion Commentary",
+      "type": "timed",
+      "description": "Everything said in slow dramatic fashion.",
+      "icon": "i-lucide-gauge",
+      "requiredMs": 300000,
+      "category": "performance"
+    },
+    {
+      "id": "drawing-challenge",
+      "rewardName": "Draw Something",
+      "type": "instant",
+      "description": "Draw what the redeemer requests (MS Paint style).",
+      "icon": "i-lucide-pen-tool",
+      "category": "entertainment"
+    },
+    {
+      "id": "high-five",
+      "rewardName": "Virtual High Five",
+      "type": "banked",
+      "description": "Bank high-fives and cash them in for a celebration.",
+      "icon": "i-lucide-hand-metal",
+      "quantity": 5,
+      "category": "social"
+    },
+    {
+      "id": "timeout-self",
+      "rewardName": "Self Timeout",
+      "type": "timed",
+      "description": "Step away from keyboard, hands off!",
+      "icon": "i-lucide-clock",
+      "requiredMs": 60000,
+      "category": "challenge"
+    },
+    {
+      "id": "impressions",
+      "rewardName": "Do an Impression",
+      "type": "instant",
+      "description": "Do your best impression of someone famous.",
+      "icon": "i-lucide-drama",
+      "category": "performance"
+    },
+    {
+      "id": "sprint-interval",
+      "rewardName": "Sprint Interval",
+      "type": "timed",
+      "description": "Go all-out max effort sprint on the bike.",
+      "icon": "i-lucide-zap",
+      "requiredMs": 30000,
+      "category": "fitness"
+    },
+    {
+      "id": "climb-simulation",
+      "rewardName": "Big Climb",
+      "type": "timed",
+      "description": "Crank up the resistance and simulate a steep climb.",
+      "icon": "i-lucide-mountain",
+      "requiredMs": 300000,
+      "category": "challenge"
+    },
+    {
+      "id": "no-sit",
+      "rewardName": "Out of Saddle",
+      "type": "timed",
+      "description": "Stand up and pedal out of the saddle.",
+      "icon": "i-lucide-arrow-up",
+      "requiredMs": 60000,
+      "category": "fitness"
+    },
+    {
+      "id": "cadence-challenge",
+      "rewardName": "High Cadence",
+      "type": "timed",
+      "description": "Maintain 100+ RPM cadence for the duration.",
+      "icon": "i-lucide-gauge",
+      "requiredMs": 120000,
+      "category": "performance"
+    },
+    {
+      "id": "one-leg-drill",
+      "rewardName": "Single Leg Drill",
+      "type": "counter",
+      "description": "Pedal with one leg at a time to improve form.",
+      "icon": "i-lucide-footprints",
+      "targetCount": 6,
+      "category": "performance"
+    },
+    {
+      "id": "no-hands",
+      "rewardName": "No Hands Riding",
+      "type": "timed",
+      "description": "Ride without holding the handlebars (careful!).",
+      "icon": "i-lucide-hand",
+      "requiredMs": 30000,
+      "category": "challenge"
+    },
+    {
+      "id": "shortest-path-climb",
+      "rewardName": "Shortest Path to Summit",
+      "type": "instant",
+      "description": "Take the steepest, shortest route up the next climb.",
+      "icon": "i-lucide-route",
+      "category": "challenge"
+    },
+    {
+      "id": "power-surge",
+      "rewardName": "Power Surge",
+      "type": "counter",
+      "description": "Hit a 10-second max power burst.",
+      "icon": "i-lucide-bolt",
+      "targetCount": 5,
+      "category": "fitness"
+    },
+    {
+      "id": "low-gear-grind",
+      "rewardName": "Low Gear Grind",
+      "type": "timed",
+      "description": "Stay in the lowest gear and grind it out.",
+      "icon": "i-lucide-settings",
+      "requiredMs": 180000,
+      "category": "challenge"
+    },
+    {
+      "id": "recovery-spin",
+      "rewardName": "Recovery Spin",
+      "type": "timed",
+      "description": "Easy spin at low resistance to recover.",
+      "icon": "i-lucide-heart-pulse",
+      "requiredMs": 120000,
+      "category": "wellness"
+    },
+    {
+      "id": "attack-mode",
+      "rewardName": "Attack Mode",
+      "type": "toggle",
+      "description": "Toggle race attack mode — full gas until deactivated.",
+      "icon": "i-lucide-flame",
+      "category": "fitness"
+    },
+    {
+      "id": "aero-tuck",
+      "rewardName": "Aero Tuck",
+      "type": "timed",
+      "description": "Get low in the drops and hold an aero position.",
+      "icon": "i-lucide-wind",
+      "requiredMs": 60000,
+      "category": "performance"
+    },
+    {
+      "id": "hydration-lap",
+      "rewardName": "Hydration Lap",
+      "type": "banked",
+      "description": "Take a sip of water — bank multiple for longer rides.",
+      "icon": "i-lucide-droplets",
+      "quantity": 5,
+      "category": "wellness"
+    }
+  ],
+  "categories": [
+    { "id": "challenge", "label": "Challenge", "icon": "i-lucide-swords" },
+    { "id": "fitness", "label": "Fitness", "icon": "i-lucide-dumbbell" },
+    { "id": "cosmetic", "label": "Cosmetic", "icon": "i-lucide-palette" },
+    { "id": "entertainment", "label": "Entertainment", "icon": "i-lucide-party-popper" },
+    { "id": "performance", "label": "Performance", "icon": "i-lucide-mic" },
+    { "id": "social", "label": "Social", "icon": "i-lucide-users" },
+    { "id": "wellness", "label": "Wellness", "icon": "i-lucide-heart-pulse" }
+  ]
+}
