@@ -19,9 +19,6 @@ const statusTabs = [
 
 <template>
   <div class="h-full overflow-y-auto">
-    <!-- Gradient backdrop -->
-    <div class="pointer-events-none absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-[var(--ui-primary)]/5 to-transparent" />
-
     <div class="relative mx-auto max-w-7xl p-4">
       <!-- Stats (clickable filters) -->
       <RedeemsRedeemStats />

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import k4kLogo from '~/assets/images/k4k-logo-full.png'
+
 const { loggedIn } = useUserSession()
 
 // Redirect if already logged in
@@ -11,7 +13,7 @@ if (loggedIn.value) {
   <div class="flex h-full items-center justify-center">
     <div class="w-full max-w-sm space-y-6 text-center">
       <div>
-        <UIcon name="i-lucide-trophy" class="mx-auto size-12 text-[var(--ui-primary)]" />
+        <img :src="k4kLogo" alt="Kilometers 4 Kiddos" class="mx-auto h-14" />
         <h1 class="mt-4 text-2xl font-bold">Sign in to Reward Tracker</h1>
         <p class="mt-2 text-sm text-[var(--ui-text-muted)]">
           Sign in with your Google account to join events as a fundraiser and manage your rewards.

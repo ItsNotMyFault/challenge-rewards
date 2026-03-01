@@ -85,10 +85,10 @@ watch(activeTab, (val) => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: #0a0a0f;
+  background-color: #f8fafc;
   background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    radial-gradient(circle, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
   background-size: 40px 40px, 20px 20px;
   background-position: 0 0, 10px 10px;
 }

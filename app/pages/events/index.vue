@@ -18,8 +18,6 @@ function openCreate() {
 
 <template>
   <div class="h-full overflow-y-auto">
-    <div class="pointer-events-none absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-[var(--ui-primary)]/5 to-transparent" />
-
     <div class="relative mx-auto max-w-7xl p-4">
       <!-- Header -->
       <div class="mb-6 flex items-center justify-between">

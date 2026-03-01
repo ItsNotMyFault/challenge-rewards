@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', 'nuxt-auth-utils'],
   css: ['~/assets/css/main.css'],
   colorMode: {
-    preference: 'dark',
+    preference: 'light',
+    fallback: 'light',
   },
 })

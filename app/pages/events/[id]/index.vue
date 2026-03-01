@@ -95,8 +95,6 @@ const menuItems = computed(() => [
 <template>
   <div class="h-full overflow-y-auto">
     <div v-if="event" class="relative">
-      <div class="pointer-events-none absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-[var(--ui-primary)]/5 to-transparent" />
-
       <div class="relative mx-auto max-w-7xl p-4">
         <!-- Back + actions -->
         <div class="mb-4 flex items-center justify-between">
@@ -198,7 +196,7 @@ const menuItems = computed(() => [
             <div
               v-for="reward in eventRewards"
               :key="reward.id"
-              class="flex items-center gap-3 rounded-lg bg-[var(--ui-bg-elevated)]/50 px-3 py-2.5 ring-1 ring-[var(--ui-border)]"
+              class="flex items-center gap-3 rounded-lg bg-[var(--ui-bg)] px-3 py-2.5 shadow-sm ring-1 ring-[var(--ui-border)]"
             >
               <span
                 :class="[

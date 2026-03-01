@@ -49,10 +49,10 @@ const statusColor = computed(() => {
       <div class="space-y-3">
         <div class="space-y-1.5">
           <div class="flex items-end justify-between text-sm">
-            <span class="font-bold text-[var(--ui-primary)]">{{ formatCurrency(raised) }}</span>
+            <span class="font-bold text-green-600">{{ formatCurrency(raised) }}</span>
             <span class="text-xs text-[var(--ui-text-muted)]">of {{ formatCurrency(event.goal) }}</span>
           </div>
-          <StaticProgressBar :value="progress" :color="progress >= 100 ? 'bg-green-500' : 'bg-primary'" />
+          <StaticProgressBar :value="progress" />
         </div>
       </div>
 

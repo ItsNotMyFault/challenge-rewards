@@ -94,10 +94,10 @@ const avatarClasses = computed(() => {
 
       <div class="space-y-2">
         <div class="flex items-end justify-between text-sm">
-          <span class="font-bold text-[var(--ui-primary)]">{{ formatCurrency(fundraiser.raised) }}</span>
+          <span class="font-bold text-green-600">{{ formatCurrency(fundraiser.raised) }}</span>
           <span class="text-xs text-[var(--ui-text-muted)]">of {{ formatCurrency(fundraiser.goal) }}</span>
         </div>
-        <StaticProgressBar :value="progress" :color="progress >= 100 ? 'bg-green-500' : 'bg-primary'" />
+        <StaticProgressBar :value="progress" />
       </div>
 
       <template #footer>

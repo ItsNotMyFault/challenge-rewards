@@ -37,7 +37,7 @@ watch(remainingMs, (val) => {
       <span class="text-xs text-[var(--ui-text-muted)]">elapsed</span>
     </div>
 
-    <StaticProgressBar :value="progress" :color="progress >= 90 ? 'bg-green-500' : 'bg-primary'" />
+    <StaticProgressBar :value="progress" />
 
     <div class="flex items-center justify-between text-xs text-[var(--ui-text-muted)]">
       <span>{{ Math.round(progress) }}%</span>

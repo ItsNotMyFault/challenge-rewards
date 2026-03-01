@@ -6,7 +6,107 @@ html, body, #__nuxt {
   padding: 0;
   width: 100%;
   height: 100%;
-  background-color: #0a0a0f;
-  color: #c8c8d4;
   font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Header nav text visibility against sky */
+header [data-orientation] a,
+header [data-orientation] button {
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(255,255,255,0.6);
+}
+
+/* ===========================================
+   LAYER 1: Sky → Pink/Red → Subtle dark
+   =========================================== */
+#__nuxt {
+  background:
+    linear-gradient(
+      to bottom,
+      #B8DEF0 0%,
+      #87CEEB 8%,
+      #a8d4e8 18%,
+      #d4e8f0 25%,
+      #f0e0e2 32%,
+      #e8d0d4 40%,
+      #dcc0c5 50%,
+      #c8a8ae 60%,
+      #a88890 70%,
+      #886870 80%,
+      #604850 90%,
+      #3a2028 100%
+    );
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+/* ===========================================
+   LAYER 2: Mountain silhouettes — subtle, peaky, smaller
+   =========================================== */
+#__nuxt::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    /* Back ridge — sharp jagged peaks */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400' preserveAspectRatio='none'%3E%3Cpath d='M0,400 L0,310 L60,280 L100,300 L140,260 L190,290 L230,240 L270,270 L320,220 L360,260 L410,200 L450,250 L500,190 L540,230 L580,180 L630,220 L670,170 L720,210 L760,160 L810,200 L850,150 L900,190 L940,140 L990,180 L1030,155 L1070,190 L1120,160 L1160,200 L1210,170 L1250,210 L1300,180 L1340,220 L1390,195 L1440,240 L1440,400 Z' fill='%23301820' fill-opacity='0.4'/%3E%3C/svg%3E"),
+    /* Middle ridge — sharper, offset */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400' preserveAspectRatio='none'%3E%3Cpath d='M0,400 L0,330 L50,305 L90,325 L130,285 L180,310 L220,270 L270,295 L310,255 L360,280 L400,240 L450,265 L490,225 L540,255 L590,210 L630,245 L680,200 L720,235 L770,195 L810,225 L860,185 L910,215 L950,180 L1000,210 L1050,185 L1100,215 L1150,190 L1200,220 L1250,200 L1300,230 L1350,210 L1400,240 L1440,225 L1440,400 Z' fill='%23281418' fill-opacity='0.5'/%3E%3C/svg%3E"),
+    /* Front ridge — darkest, lowest */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400' preserveAspectRatio='none'%3E%3Cpath d='M0,400 L0,350 L70,325 L120,345 L170,310 L230,335 L280,300 L340,320 L390,290 L450,315 L510,280 L560,305 L620,275 L680,300 L730,270 L790,295 L850,265 L910,290 L970,260 L1030,285 L1090,260 L1150,280 L1210,255 L1270,280 L1330,260 L1390,280 L1440,270 L1440,400 Z' fill='%231a0c10' fill-opacity='0.6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position:
+    bottom center,
+    bottom center,
+    bottom center;
+  background-size:
+    100% 28%,
+    100% 24%,
+    100% 20%;
+  background-attachment: fixed;
+}
+
+/* ===========================================
+   LAYER 3: Clouds — below header, in sky zone
+   =========================================== */
+#__nuxt::after {
+  content: '';
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  height: 40vh;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    /* Cloud 1 — large, left */
+    radial-gradient(ellipse 130px 55px at 15% 18%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 40%, transparent 70%),
+    radial-gradient(ellipse 95px 42px at 12% 22%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 50%, transparent 70%),
+    radial-gradient(ellipse 105px 48px at 19% 15%, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.2) 45%, transparent 70%),
+
+    /* Cloud 2 — medium, center-left */
+    radial-gradient(ellipse 105px 42px at 35% 12%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.22) 45%, transparent 70%),
+    radial-gradient(ellipse 82px 36px at 32% 16%, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.18) 50%, transparent 70%),
+    radial-gradient(ellipse 88px 40px at 39% 10%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.15) 45%, transparent 70%),
+
+    /* Cloud 3 — large, right */
+    radial-gradient(ellipse 145px 58px at 72% 15%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.22) 40%, transparent 70%),
+    radial-gradient(ellipse 105px 48px at 68% 20%, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.18) 45%, transparent 70%),
+    radial-gradient(ellipse 115px 50px at 76% 12%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.15) 45%, transparent 70%),
+
+    /* Cloud 4 — small wispy, top-right */
+    radial-gradient(ellipse 90px 22px at 88% 8%, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.12) 50%, transparent 75%),
+    radial-gradient(ellipse 70px 18px at 91% 11%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 50%, transparent 75%),
+
+    /* Cloud 5 — small, far left */
+    radial-gradient(ellipse 68px 30px at 5% 10%, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.12) 50%, transparent 70%),
+    radial-gradient(ellipse 52px 24px at 8% 13%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 50%, transparent 70%),
+
+    /* Cloud 6 — medium, lower center */
+    radial-gradient(ellipse 95px 40px at 55% 30%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.15) 45%, transparent 70%),
+    radial-gradient(ellipse 78px 34px at 52% 34%, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.12) 50%, transparent 70%),
+    radial-gradient(ellipse 82px 36px at 58% 28%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 45%, transparent 70%);
+  background-repeat: no-repeat;
 }

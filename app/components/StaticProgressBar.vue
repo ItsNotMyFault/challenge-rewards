@@ -4,7 +4,7 @@ const props = withDefaults(defineProps<{
   color?: string
   size?: 'xs' | 'sm' | 'md'
 }>(), {
-  color: 'bg-primary',
+  color: 'bg-green-500',
   size: 'sm',
 })
 

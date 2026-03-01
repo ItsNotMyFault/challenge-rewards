@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
+import k4kLogo from '~/assets/images/k4k-logo-full.png'
 
+const route = useRoute()
 const { loggedIn, user, clear: logout } = useUserSession()
 const eventsStore = useEventsStore()
+
+const currentEventId = computed(() => route.params.id as string | undefined)
+const currentEvent = computed(() => currentEventId.value ? eventsStore.getEvent(currentEventId.value) : undefined)
+const isK4K = computed(() => {
+  const name = currentEvent.value?.name?.toLowerCase() ?? ''
+  return name.includes('k4k') || name.includes('kilometers') || name.includes('kiddos')
+})
 
 // Fetch events for nav dropdown (non-blocking)
 // Initial fetch
@@ -76,13 +85,12 @@ const navItems = computed<NavigationMenuItem[]>(() => {
 </script>
 
 <template>
-  <div class="flex h-screen flex-col overflow-hidden">
-    <header class="relative z-50 h-14 shrink-0 border-b border-[var(--ui-border)] bg-[var(--ui-bg)]/80 backdrop-blur-lg">
+  <div class="relative z-10 flex h-screen flex-col overflow-hidden">
+    <header class="relative z-50 h-14 shrink-0 border-b border-white/20 bg-sky-400/15 backdrop-blur-sm">
       <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-4">
-        <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-trophy" class="size-5 text-[var(--ui-primary)]" />
-          <span class="text-base font-bold tracking-tight">Reward Tracker</span>
-        </div>
+        <NuxtLink to="/events" class="flex h-9 items-center transition-opacity hover:opacity-80">
+          <img v-if="isK4K" :src="k4kLogo" alt="Kilometers 4 Kiddos" class="h-9" />
+        </NuxtLink>
 
         <UNavigationMenu
           :items="navItems"
@@ -92,8 +100,6 @@ const navItems = computed<NavigationMenuItem[]>(() => {
         />
 
         <div class="flex items-center gap-2">
-          <UColorModeButton size="sm" />
-
           <template v-if="loggedIn && user">
             <UDropdownMenu
               :items="[

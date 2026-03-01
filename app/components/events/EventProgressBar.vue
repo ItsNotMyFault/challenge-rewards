@@ -18,11 +18,11 @@ function formatCurrency(value: number): string {
   <div class="space-y-2">
     <div class="flex items-end justify-between">
       <div>
-        <span class="text-2xl font-bold text-[var(--ui-primary)]">{{ formatCurrency(raised) }}</span>
+        <span class="text-2xl font-bold text-green-600">{{ formatCurrency(raised) }}</span>
         <span class="ml-1 text-sm text-[var(--ui-text-muted)]">raised of {{ formatCurrency(goal) }}</span>
       </div>
       <span class="text-sm font-medium">{{ Math.round(progress) }}%</span>
     </div>
-    <StaticProgressBar :value="progress" :color="progress >= 100 ? 'bg-green-500' : 'bg-primary'" class="h-3" />
+    <StaticProgressBar :value="progress" class="h-3" />
   </div>
 </template>

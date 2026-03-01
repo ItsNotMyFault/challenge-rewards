@@ -141,15 +141,15 @@ function getStyles(): Stylesheet[] {
         'label': 'data(label)',
         'width': 56,
         'height': 56,
-        'background-color': '#12122a',
+        'background-color': '#ffffff',
         'background-opacity': 1,
         'border-width': 2,
-        'border-color': '#444466',
-        'color': '#c8c8d4',
+        'border-color': '#cbd5e1',
+        'color': '#1e293b',
         'font-size': '10px',
         'text-valign': 'bottom',
         'text-margin-y': 8,
-        'text-outline-color': '#0a0a0f',
+        'text-outline-color': '#f8fafc',
         'text-outline-width': 2,
       },
     },
@@ -181,7 +181,7 @@ function getStyles(): Stylesheet[] {
       selector: 'edge',
       style: {
         'width': 2,
-        'line-color': '#333355',
+        'line-color': '#94a3b8',
         'curve-style': 'bezier',
         'target-arrow-shape': 'none',
         'opacity': 0.6,
@@ -195,13 +195,13 @@ function getStyles(): Stylesheet[] {
   <div ref="cyContainer" class="size-full" />
   <div
     v-show="tooltipVisible"
-    class="pointer-events-none fixed z-50 max-w-[250px] -translate-x-1/2 -translate-y-full rounded-lg border border-white/10 bg-gray-950/95 px-3.5 py-2.5 shadow-xl shadow-black/40 backdrop-blur-sm"
+    class="pointer-events-none fixed z-50 max-w-[250px] -translate-x-1/2 -translate-y-full rounded-lg border border-slate-200 bg-white/95 px-3.5 py-2.5 shadow-lg backdrop-blur-sm"
     :style="{ left: tooltipX + 'px', top: tooltipY + 'px' }"
   >
-    <div class="text-sm font-semibold text-amber-200/90">
+    <div class="text-sm font-semibold text-slate-900">
       {{ tooltipLabel }}
     </div>
-    <div class="mt-1 text-xs leading-relaxed text-gray-400">
+    <div class="mt-1 text-xs leading-relaxed text-slate-500">
       {{ tooltipDescription }}
     </div>
   </div>
