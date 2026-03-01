@@ -63,6 +63,7 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
       'border-l-3 transition-all duration-200 hover:shadow-lg hover:shadow-[var(--ui-primary)]/5',
       colors.border,
     ]"
+    :ui="{ root: 'h-full flex flex-col', body: 'flex-1' }"
   >
     <template #header>
       <div class="flex items-start justify-between gap-2">
