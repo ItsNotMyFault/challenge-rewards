@@ -5,7 +5,7 @@ const props = defineProps<{
   redeem: CounterRedeem
 }>()
 
-const store = useRedeemsStore()
+const actions = useRedeemActions()
 
 const progress = computed(() => {
   if (props.redeem.targetCount === 0) return 100
@@ -36,7 +36,7 @@ const progress = computed(() => {
         variant="soft"
         size="sm"
         :disabled="redeem.currentCount <= 0"
-        @click="store.decrementCounter(redeem.id)"
+        @click="actions.decrementCounter(redeem.id)"
       />
       <UButton
         icon="i-lucide-plus"
@@ -45,7 +45,7 @@ const progress = computed(() => {
         variant="soft"
         size="sm"
         block
-        @click="store.incrementCounter(redeem.id)"
+        @click="actions.incrementCounter(redeem.id)"
       />
     </div>
   </div>

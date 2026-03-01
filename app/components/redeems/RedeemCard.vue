@@ -6,7 +6,7 @@ const props = defineProps<{
   redeem: Redeem
 }>()
 
-const store = useRedeemsStore()
+const actions = useRedeemActions()
 const confirm = useConfirmAction()
 const { statusColor, typeIcon, typeLabel, typeColors, relativeTime } = useRedeemHelpers()
 const { categoryColors, categoryIcon, categoryLabel } = useRewardHelpers()
@@ -26,7 +26,7 @@ function confirmReset() {
     color: 'warning',
     confirmLabel: 'Reset',
     confirmIcon: 'i-lucide-rotate-ccw',
-    action: () => store.resetRedeem(props.redeem.id),
+    action: () => actions.resetRedeem(props.redeem.id),
   })
 }
 
@@ -44,7 +44,7 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
       label: 'Delete',
       icon: 'i-lucide-trash-2',
       color: 'error' as const,
-      onSelect: () => store.deleteRedeem(props.redeem.id),
+      onSelect: () => actions.deleteRedeem(props.redeem.id),
     },
   ],
 ])

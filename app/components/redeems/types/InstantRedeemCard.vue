@@ -5,7 +5,7 @@ const props = defineProps<{
   redeem: InstantRedeem
 }>()
 
-const store = useRedeemsStore()
+const actions = useRedeemActions()
 const { relativeTime } = useRedeemHelpers()
 </script>
 
@@ -33,7 +33,7 @@ const { relativeTime } = useRedeemHelpers()
         color="success"
         size="lg"
         block
-        @click="store.completeInstant(redeem.id)"
+        @click="actions.completeInstant(redeem.id)"
       />
     </div>
   </div>

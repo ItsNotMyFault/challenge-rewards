@@ -1,5 +1,28 @@
 <script setup lang="ts">
+import type { Redeem } from '~/types/redeems'
+
+const props = withDefaults(defineProps<{
+  redeems?: Redeem[]
+  title?: string
+}>(), {
+  title: 'Leaderboard',
+})
+
 const store = useRedeemsStore()
+
+const leaderboard = computed(() => {
+  const source = props.redeems ?? store.redeems
+  const map = new Map<string, { redeemer: string, total: number, completed: number, active: number }>()
+  for (const r of source) {
+    const key = r.redeemer.toLowerCase()
+    const entry = map.get(key) || { redeemer: r.redeemer, total: 0, completed: 0, active: 0 }
+    entry.total++
+    if (r.status === 'completed') entry.completed++
+    else entry.active++
+    map.set(key, entry)
+  }
+  return [...map.values()].sort((a, b) => b.total - a.total || a.redeemer.localeCompare(b.redeemer))
+})
 
 const rankColors = ['text-amber-400', 'text-zinc-400', 'text-orange-400']
 const rankIcons = ['i-lucide-crown', 'i-lucide-medal', 'i-lucide-award']
@@ -18,12 +41,12 @@ function completionPercent(entry: { total: number, completed: number }) {
   <div class="rounded-xl bg-[var(--ui-bg-elevated)]/50 p-4 ring-1 ring-[var(--ui-border)]">
     <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold">
       <UIcon name="i-lucide-trophy" class="size-4 text-amber-400" />
-      Leaderboard
+      {{ title }}
     </h3>
 
-    <div v-if="store.leaderboard.length > 0" class="space-y-2">
+    <div v-if="leaderboard.length > 0" class="space-y-2">
       <div
-        v-for="(entry, idx) in store.leaderboard"
+        v-for="(entry, idx) in leaderboard"
         :key="entry.redeemer"
         class="flex items-center gap-2.5 rounded-lg px-2 py-1.5"
         :class="idx < 3 ? 'bg-[var(--ui-bg-elevated)]/50' : ''"

@@ -1,17 +1,10 @@
 import type {
   Redeem,
   CreateRedeemPayload,
-  TimedRedeem,
-  BankedRedeem,
-  CounterRedeem,
-  RedeemType,
 } from '~/types/redeems'
 import type { RewardCategory } from '~/types/rewards'
 import presetData from '~/data/redeem-presets.json'
-
-function generateId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
-}
+import * as ra from '~/utils/redeem-actions'
 
 export const useRedeemsStore = defineStore('redeems', {
   state: () => ({
@@ -140,223 +133,27 @@ export const useRedeemsStore = defineStore('redeems', {
     },
 
     addRedeem(payload: CreateRedeemPayload) {
-      const now = new Date().toISOString()
-      const base = {
-        id: generateId(),
-        category: payload.category,
-        redeemer: payload.redeemer,
-        rewardName: payload.rewardName,
-        note: payload.note || '',
-        createdAt: now,
-        updatedAt: now,
-      }
-
-      switch (payload.type) {
-        case 'timed':
-          this.redeems.push({
-            ...base,
-            type: 'timed',
-            status: 'paused',
-            requiredMs: payload.requiredMs,
-            accumulatedMs: 0,
-            timerStartedAt: null,
-          })
-          break
-
-        case 'banked': {
-          const existing = this.redeems.find(
-            r =>
-              r.type === 'banked'
-              && r.redeemer === payload.redeemer
-              && r.rewardName === payload.rewardName
-              && r.status !== 'completed',
-          ) as BankedRedeem | undefined
-
-          if (existing) {
-            existing.quantity += payload.quantity
-            existing.totalRedeemed += payload.quantity
-            existing.updatedAt = now
-          }
-          else {
-            this.redeems.push({
-              ...base,
-              type: 'banked',
-              status: 'active',
-              quantity: payload.quantity,
-              totalRedeemed: payload.quantity,
-              totalConsumed: 0,
-            })
-          }
-          break
-        }
-
-        case 'instant':
-          this.redeems.push({
-            ...base,
-            type: 'instant',
-            status: 'active',
-            completedAt: null,
-          })
-          break
-
-        case 'counter':
-          this.redeems.push({
-            ...base,
-            type: 'counter',
-            status: 'active',
-            targetCount: payload.targetCount,
-            currentCount: 0,
-          })
-          break
-
-        case 'toggle':
-          this.redeems.push({
-            ...base,
-            type: 'toggle',
-            status: 'active',
-            activatedAt: null,
-            deactivatedAt: null,
-          })
-          break
-      }
+      ra.createRedeem(this.redeems, payload)
     },
 
-    // Timer actions
-    startTimer(id: string) {
-      const r = this.redeems.find(r => r.id === id) as TimedRedeem | undefined
-      if (!r || r.type !== 'timed') return
-      r.timerStartedAt = new Date().toISOString()
-      r.status = 'active'
-      r.updatedAt = new Date().toISOString()
-    },
+    startTimer(id: string) { ra.startTimer(this.redeems, id) },
+    pauseTimer(id: string) { ra.pauseTimer(this.redeems, id) },
+    completeTimer(id: string) { ra.completeTimer(this.redeems, id) },
 
-    pauseTimer(id: string) {
-      const r = this.redeems.find(r => r.id === id) as TimedRedeem | undefined
-      if (!r || r.type !== 'timed' || !r.timerStartedAt) return
-      r.accumulatedMs += Date.now() - new Date(r.timerStartedAt).getTime()
-      r.timerStartedAt = null
-      r.status = 'paused'
-      r.updatedAt = new Date().toISOString()
-    },
+    consumeBanked(id: string) { ra.consumeBanked(this.redeems, id) },
+    addToBanked(id: string, amount: number = 1) { ra.addToBanked(this.redeems, id, amount) },
 
-    completeTimer(id: string) {
-      const r = this.redeems.find(r => r.id === id) as TimedRedeem | undefined
-      if (!r || r.type !== 'timed') return
-      if (r.timerStartedAt) {
-        r.accumulatedMs += Date.now() - new Date(r.timerStartedAt).getTime()
-        r.timerStartedAt = null
-      }
-      r.status = 'completed'
-      r.updatedAt = new Date().toISOString()
-    },
+    completeInstant(id: string) { ra.completeInstant(this.redeems, id) },
 
-    // Banked actions
-    consumeBanked(id: string) {
-      const r = this.redeems.find(r => r.id === id) as BankedRedeem | undefined
-      if (!r || r.type !== 'banked' || r.quantity <= 0) return
-      r.quantity--
-      r.totalConsumed++
-      if (r.quantity === 0) r.status = 'completed'
-      r.updatedAt = new Date().toISOString()
-    },
+    incrementCounter(id: string) { ra.incrementCounter(this.redeems, id) },
+    decrementCounter(id: string) { ra.decrementCounter(this.redeems, id) },
 
-    addToBanked(id: string, amount: number = 1) {
-      const r = this.redeems.find(r => r.id === id) as BankedRedeem | undefined
-      if (!r || r.type !== 'banked') return
-      r.quantity += amount
-      r.totalRedeemed += amount
-      if (r.status === 'completed') r.status = 'active'
-      r.updatedAt = new Date().toISOString()
-    },
+    activateToggle(id: string) { ra.activateToggle(this.redeems, id) },
+    deactivateToggle(id: string) { ra.deactivateToggle(this.redeems, id) },
 
-    // Instant actions
-    completeInstant(id: string) {
-      const r = this.redeems.find(r => r.id === id)
-      if (!r || r.type !== 'instant') return
-      r.completedAt = new Date().toISOString()
-      r.status = 'completed'
-      r.updatedAt = new Date().toISOString()
-    },
-
-    // Counter actions
-    incrementCounter(id: string) {
-      const r = this.redeems.find(r => r.id === id) as CounterRedeem | undefined
-      if (!r || r.type !== 'counter' || r.status === 'completed') return
-      r.currentCount++
-      if (r.currentCount >= r.targetCount) r.status = 'completed'
-      r.updatedAt = new Date().toISOString()
-    },
-
-    decrementCounter(id: string) {
-      const r = this.redeems.find(r => r.id === id) as CounterRedeem | undefined
-      if (!r || r.type !== 'counter' || r.currentCount <= 0) return
-      r.currentCount--
-      if (r.status === 'completed') r.status = 'active'
-      r.updatedAt = new Date().toISOString()
-    },
-
-    // Toggle actions
-    activateToggle(id: string) {
-      const r = this.redeems.find(r => r.id === id)
-      if (!r || r.type !== 'toggle') return
-      r.activatedAt = new Date().toISOString()
-      r.deactivatedAt = null
-      r.status = 'active'
-      r.updatedAt = new Date().toISOString()
-    },
-
-    deactivateToggle(id: string) {
-      const r = this.redeems.find(r => r.id === id)
-      if (!r || r.type !== 'toggle') return
-      r.deactivatedAt = new Date().toISOString()
-      r.status = 'completed'
-      r.updatedAt = new Date().toISOString()
-    },
-
-    // General actions
-    deleteRedeem(id: string) {
-      const idx = this.redeems.findIndex(r => r.id === id)
-      if (idx !== -1) this.redeems.splice(idx, 1)
-    },
-
-    resetRedeem(id: string) {
-      const r = this.redeems.find(r => r.id === id)
-      if (!r) return
-      const now = new Date().toISOString()
-      switch (r.type) {
-        case 'timed':
-          r.status = 'paused'
-          r.accumulatedMs = 0
-          r.timerStartedAt = null
-          break
-        case 'banked':
-          r.quantity = r.totalRedeemed
-          r.totalConsumed = 0
-          r.status = 'active'
-          break
-        case 'instant':
-          r.status = 'active'
-          r.completedAt = null
-          break
-        case 'counter':
-          r.currentCount = 0
-          r.status = 'active'
-          break
-        case 'toggle':
-          r.activatedAt = null
-          r.deactivatedAt = null
-          r.status = 'active'
-          break
-      }
-      r.updatedAt = now
-    },
-
-    updateNote(id: string, note: string) {
-      const r = this.redeems.find(r => r.id === id)
-      if (!r) return
-      r.note = note
-      r.updatedAt = new Date().toISOString()
-    },
+    deleteRedeem(id: string) { ra.deleteRedeem(this.redeems, id) },
+    resetRedeem(id: string) { ra.resetRedeem(this.redeems, id) },
+    updateNote(id: string, note: string) { ra.updateNote(this.redeems, id, note) },
   },
 
   persist: true,

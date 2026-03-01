@@ -5,7 +5,7 @@ const props = defineProps<{
   redeem: TimedRedeem
 }>()
 
-const store = useRedeemsStore()
+const actions = useRedeemActions()
 const redeemRef = computed(() => props.redeem)
 const { formattedElapsed, formattedRemaining, progress, isRunning, remainingMs } = useTimer(redeemRef)
 
@@ -16,7 +16,7 @@ const progressColor = computed(() => {
 
 watch(remainingMs, (val) => {
   if (val <= 0 && props.redeem.status !== 'completed') {
-    store.completeTimer(props.redeem.id)
+    actions.completeTimer(props.redeem.id)
   }
 })
 </script>
@@ -52,7 +52,7 @@ watch(remainingMs, (val) => {
         variant="soft"
         size="sm"
         block
-        @click="store.startTimer(redeem.id)"
+        @click="actions.startTimer(redeem.id)"
       />
       <UButton
         v-else
@@ -62,7 +62,7 @@ watch(remainingMs, (val) => {
         variant="soft"
         size="sm"
         block
-        @click="store.pauseTimer(redeem.id)"
+        @click="actions.pauseTimer(redeem.id)"
       />
       <UButton
         icon="i-lucide-check"
@@ -70,7 +70,7 @@ watch(remainingMs, (val) => {
         color="success"
         variant="soft"
         size="sm"
-        @click="store.completeTimer(redeem.id)"
+        @click="actions.completeTimer(redeem.id)"
       />
     </div>
   </div>

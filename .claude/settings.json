@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(npx nuxi prepare)",
-      "mcp__claude_ai_Nuxt_UI__get-component-metadata"
+      "mcp__claude_ai_Nuxt_UI__get-component-metadata",
+      "Bash(xargs grep -l \"step\\\\|wizard\\\\|form.*multi\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Alexi\\Documents\\devprojects\\test\\challenge-rewards\\app\\pages\\events\\[id]"
     ]
   }
 }

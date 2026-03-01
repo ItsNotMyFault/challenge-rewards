@@ -5,7 +5,7 @@ defineProps<{
   redeem: BankedRedeem
 }>()
 
-const store = useRedeemsStore()
+const actions = useRedeemActions()
 </script>
 
 <template>
@@ -39,14 +39,14 @@ const store = useRedeemsStore()
         size="sm"
         block
         :disabled="redeem.quantity <= 0"
-        @click="store.consumeBanked(redeem.id)"
+        @click="actions.consumeBanked(redeem.id)"
       />
       <UButton
         icon="i-lucide-plus"
         color="neutral"
         variant="soft"
         size="sm"
-        @click="store.addToBanked(redeem.id)"
+        @click="actions.addToBanked(redeem.id)"
       />
     </div>
   </div>

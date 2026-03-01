@@ -5,7 +5,7 @@ const props = defineProps<{
   redeem: ToggleRedeem
 }>()
 
-const store = useRedeemsStore()
+const actions = useRedeemActions()
 const { relativeTime, formatDuration } = useRedeemHelpers()
 
 const isActive = computed(() => props.redeem.status === 'active' && props.redeem.activatedAt !== null)
@@ -36,10 +36,10 @@ onUnmounted(() => {
 
 function toggle(value: boolean) {
   if (value) {
-    store.activateToggle(props.redeem.id)
+    actions.activateToggle(props.redeem.id)
   }
   else {
-    store.deactivateToggle(props.redeem.id)
+    actions.deactivateToggle(props.redeem.id)
   }
 }
 </script>
