@@ -1,3 +1,5 @@
+import type { RewardCategory } from '~/types/rewards'
+
 export type RedeemType = 'timed' | 'banked' | 'instant' | 'counter' | 'toggle'
 
 export type RedeemStatus = 'active' | 'completed' | 'paused'
@@ -5,6 +7,7 @@ export type RedeemStatus = 'active' | 'completed' | 'paused'
 export interface BaseRedeem {
   id: string
   type: RedeemType
+  category: RewardCategory
   redeemer: string
   rewardName: string
   note: string
@@ -52,6 +55,7 @@ export type Redeem = TimedRedeem | BankedRedeem | InstantRedeem | CounterRedeem 
 
 export interface CreateTimedPayload {
   type: 'timed'
+  category: RewardCategory
   redeemer: string
   rewardName: string
   note?: string
@@ -60,6 +64,7 @@ export interface CreateTimedPayload {
 
 export interface CreateBankedPayload {
   type: 'banked'
+  category: RewardCategory
   redeemer: string
   rewardName: string
   note?: string
@@ -68,6 +73,7 @@ export interface CreateBankedPayload {
 
 export interface CreateInstantPayload {
   type: 'instant'
+  category: RewardCategory
   redeemer: string
   rewardName: string
   note?: string
@@ -75,6 +81,7 @@ export interface CreateInstantPayload {
 
 export interface CreateCounterPayload {
   type: 'counter'
+  category: RewardCategory
   redeemer: string
   rewardName: string
   note?: string
@@ -83,6 +90,7 @@ export interface CreateCounterPayload {
 
 export interface CreateTogglePayload {
   type: 'toggle'
+  category: RewardCategory
   redeemer: string
   rewardName: string
   note?: string

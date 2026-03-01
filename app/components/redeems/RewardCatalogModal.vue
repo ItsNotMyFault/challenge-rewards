@@ -79,6 +79,7 @@ function onSubmit() {
   const base = {
     redeemer: state.redeemer.trim(),
     rewardName: reward.rewardName,
+    category: reward.category,
     note: state.note.trim(),
   }
 

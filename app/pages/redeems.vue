@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import type { RedeemType } from '~/types/redeems'
+import type { RewardCategory } from '~/types/rewards'
 
 const store = useRedeemsStore()
-const { typeIcon, typeLabel, typeColors } = useRedeemHelpers()
+const { categoryColors, allCategories } = useRewardHelpers()
 const addModalOpen = ref(false)
 
 store.seedDefaultRedeems()
+store.migrateCategories()
 
-const types: RedeemType[] = ['timed', 'banked', 'instant', 'counter', 'toggle']
-
-function toggleTypeFilter(t: RedeemType) {
-  store.typeFilter = store.typeFilter === t ? null : t
+function toggleCategoryFilter(c: RewardCategory) {
+  store.categoryFilter = store.categoryFilter === c ? null : c
 }
 
 const statusTabs = [
@@ -35,30 +34,30 @@ const statusTabs = [
         <div class="min-w-0 flex-1">
           <!-- Filter bar -->
           <div class="mb-6 space-y-2.5 rounded-xl bg-[var(--ui-bg-elevated)]/50 p-3 ring-1 ring-[var(--ui-border)]">
-            <!-- Row 1: type stat badges + status tabs + add button -->
+            <!-- Row 1: category stat badges + status tabs + add button -->
             <div class="flex items-center gap-2">
               <div class="flex flex-wrap gap-1.5">
                 <button
-                  v-for="t in types"
-                  :key="t"
+                  v-for="cat in allCategories"
+                  :key="cat.value"
                   class="flex cursor-pointer items-center gap-1.5 rounded-lg px-2.5 py-1 ring-1 transition-all"
-                  :class="store.typeFilter === t
-                    ? [typeColors(t).bg, typeColors(t).ring, 'ring-2']
+                  :class="store.categoryFilter === cat.value
+                    ? [categoryColors(cat.value).bg, categoryColors(cat.value).ring, 'ring-2']
                     : 'bg-[var(--ui-bg-elevated)]/50 ring-[var(--ui-border)] hover:ring-[var(--ui-primary)]/30'"
-                  @click="toggleTypeFilter(t)"
+                  @click="toggleCategoryFilter(cat.value)"
                 >
-                  <UIcon :name="typeIcon(t)" :class="['size-3.5', typeColors(t).text]" />
-                  <span class="text-xs font-medium">{{ typeLabel(t) }}</span>
+                  <UIcon :name="cat.icon" :class="['size-3.5', categoryColors(cat.value).text]" />
+                  <span class="text-xs font-medium">{{ cat.label }}</span>
                   <UBadge
-                    v-if="store.countByType[t].completed > 0"
-                    :label="`${store.countByType[t].completed}/${store.countByType[t].total}`"
+                    v-if="store.countByCategory[cat.value].completed > 0"
+                    :label="`${store.countByCategory[cat.value].completed}/${store.countByCategory[cat.value].total}`"
                     color="success"
                     variant="subtle"
                     size="xs"
                   />
                   <UBadge
-                    v-else-if="store.countByType[t].total > 0"
-                    :label="`0/${store.countByType[t].total}`"
+                    v-else-if="store.countByCategory[cat.value].total > 0"
+                    :label="`0/${store.countByCategory[cat.value].total}`"
                     color="neutral"
                     variant="subtle"
                     size="xs"
@@ -73,7 +72,7 @@ const statusTabs = [
                 <UButton
                   v-for="tab in statusTabs"
                   :key="tab.value"
-                  :label="tab.label"
+                  :label="`${tab.label} (${tab.value === 'all' ? store.totalCount : tab.value === 'active' ? store.activeCount : store.completedCount})`"
                   :color="store.statusFilter === tab.value ? 'primary' : 'neutral'"
                   :variant="store.statusFilter === tab.value ? 'subtle' : 'ghost'"
                   size="xs"

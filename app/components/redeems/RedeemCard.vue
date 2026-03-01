@@ -9,8 +9,10 @@ const props = defineProps<{
 const store = useRedeemsStore()
 const confirm = useConfirmAction()
 const { statusColor, typeIcon, typeLabel, typeColors, relativeTime } = useRedeemHelpers()
+const { categoryColors, categoryIcon, categoryLabel } = useRewardHelpers()
 
 const colors = computed(() => typeColors(props.redeem.type))
+const catColors = computed(() => categoryColors(props.redeem.category))
 
 const initials = computed(() => {
   const name = props.redeem.redeemer
@@ -101,10 +103,16 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
     <template #footer>
       <div class="flex items-center justify-between text-xs text-[var(--ui-text-muted)]">
         <span>{{ relativeTime(redeem.createdAt) }}</span>
-        <span class="inline-flex items-center gap-1">
-          <UIcon :name="typeIcon(redeem.type)" :class="['size-3', colors.text]" />
-          <span :class="colors.text">{{ typeLabel(redeem.type) }}</span>
-        </span>
+        <div class="flex items-center gap-2">
+          <span :class="['inline-flex items-center gap-1 rounded-md px-1.5 py-0.5', catColors.bg]">
+            <UIcon :name="categoryIcon(redeem.category)" :class="['size-3', catColors.text]" />
+            <span :class="catColors.text">{{ categoryLabel(redeem.category) }}</span>
+          </span>
+          <span class="inline-flex items-center gap-1">
+            <UIcon :name="typeIcon(redeem.type)" :class="['size-3', colors.text]" />
+            <span :class="colors.text">{{ typeLabel(redeem.type) }}</span>
+          </span>
+        </div>
       </div>
     </template>
   </UCard>
