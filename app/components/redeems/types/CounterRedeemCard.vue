@@ -3,6 +3,7 @@ import type { CounterRedeem } from '~/types/redeems'
 
 const props = defineProps<{
   redeem: CounterRedeem
+  readonly?: boolean
 }>()
 
 const actions = useRedeemActions()
@@ -29,7 +30,7 @@ const progress = computed(() => {
       <div class="text-right text-xs text-[var(--ui-text-muted)]">{{ Math.round(progress) }}%</div>
     </div>
 
-    <div v-if="redeem.status !== 'completed'" class="flex gap-1">
+    <div v-if="redeem.status !== 'completed' && !readonly" class="flex gap-1">
       <UButton
         icon="i-lucide-minus"
         color="neutral"

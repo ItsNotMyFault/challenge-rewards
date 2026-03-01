@@ -1,4 +1,4 @@
-import type { InjectionKey } from 'vue'
+import type { InjectionKey, Ref } from 'vue'
 
 export interface RedeemActionInterface {
   startTimer: (id: string) => void
@@ -17,6 +17,11 @@ export interface RedeemActionInterface {
 }
 
 export const REDEEM_ACTIONS_KEY: InjectionKey<RedeemActionInterface> = Symbol('redeem-actions')
+export const CAN_MANAGE_REDEEMS_KEY: InjectionKey<Ref<boolean>> = Symbol('can-manage-redeems')
+
+export function useCanManageRedeems(): Ref<boolean> {
+  return inject(CAN_MANAGE_REDEEMS_KEY, ref(false))
+}
 
 export function useRedeemActions(): RedeemActionInterface {
   const injected = inject(REDEEM_ACTIONS_KEY, null)

@@ -7,6 +7,7 @@ const props = defineProps<{
 }>()
 
 const actions = useRedeemActions()
+const canManage = useCanManageRedeems()
 const confirm = useConfirmAction()
 const { statusColor, typeIcon, typeLabel, typeColors, relativeTime } = useRedeemHelpers()
 const { categoryColors, categoryIcon, categoryLabel } = useRewardHelpers()
@@ -84,7 +85,7 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
             </div>
           </div>
         </div>
-        <UDropdownMenu :items="menuItems">
+        <UDropdownMenu v-if="canManage" :items="menuItems">
           <UButton icon="i-lucide-ellipsis-vertical" color="neutral" variant="ghost" size="xs" />
         </UDropdownMenu>
       </div>
@@ -94,11 +95,11 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
       {{ redeem.note }}
     </div>
 
-    <RedeemsTypesTimedRedeemCard v-if="redeem.type === 'timed'" :redeem="redeem" />
-    <RedeemsTypesBankedRedeemCard v-else-if="redeem.type === 'banked'" :redeem="redeem" />
-    <RedeemsTypesInstantRedeemCard v-else-if="redeem.type === 'instant'" :redeem="redeem" />
-    <RedeemsTypesCounterRedeemCard v-else-if="redeem.type === 'counter'" :redeem="redeem" />
-    <RedeemsTypesToggleRedeemCard v-else-if="redeem.type === 'toggle'" :redeem="redeem" />
+    <RedeemsTypesTimedRedeemCard v-if="redeem.type === 'timed'" :redeem="redeem" :readonly="!canManage" />
+    <RedeemsTypesBankedRedeemCard v-else-if="redeem.type === 'banked'" :redeem="redeem" :readonly="!canManage" />
+    <RedeemsTypesInstantRedeemCard v-else-if="redeem.type === 'instant'" :redeem="redeem" :readonly="!canManage" />
+    <RedeemsTypesCounterRedeemCard v-else-if="redeem.type === 'counter'" :redeem="redeem" :readonly="!canManage" />
+    <RedeemsTypesToggleRedeemCard v-else-if="redeem.type === 'toggle'" :redeem="redeem" :readonly="!canManage" />
 
     <template #footer>
       <div class="flex items-center justify-between text-xs text-[var(--ui-text-muted)]">

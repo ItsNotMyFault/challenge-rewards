@@ -1,16 +1,31 @@
 <script setup lang="ts">
 import type { RewardCategory } from '~/types/rewards'
-import { REDEEM_ACTIONS_KEY, type RedeemActionInterface } from '~/composables/useRedeemActions'
+import { REDEEM_ACTIONS_KEY, CAN_MANAGE_REDEEMS_KEY, type RedeemActionInterface } from '~/composables/useRedeemActions'
 
 const route = useRoute()
+const { user } = useUserSession()
 const eventsStore = useEventsStore()
 const confirm = useConfirmAction()
 const { categoryColors, allCategories } = useRewardHelpers()
 
 const eventId = computed(() => route.params.id as string)
 const fundraiserId = computed(() => route.params.fid as string)
+
+await useAsyncData(`event-${eventId.value}`, () => eventsStore.fetchEvent(eventId.value))
+
 const event = computed(() => eventsStore.getEvent(eventId.value))
 const fundraiser = computed(() => eventsStore.getFundraiser(eventId.value, fundraiserId.value))
+
+const isOwner = computed(() => {
+  if (!user.value) return false
+  return fundraiser.value?.userId === user.value.id
+})
+
+const canManage = computed(() => {
+  if (!user.value) return false
+  if (user.value.isAdmin) return true
+  return isOwner.value
+})
 
 // Provide event-scoped redeem actions
 const redeemActions: RedeemActionInterface = {
@@ -30,9 +45,9 @@ const redeemActions: RedeemActionInterface = {
 }
 
 provide(REDEEM_ACTIONS_KEY, redeemActions)
+provide(CAN_MANAGE_REDEEMS_KEY, isOwner)
 
 const catalogModalOpen = ref(false)
-const donationModalOpen = ref(false)
 
 // Filters
 const searchQuery = ref('')
@@ -114,8 +129,8 @@ function confirmDeleteFundraiser() {
     color: 'error',
     confirmLabel: 'Delete',
     confirmIcon: 'i-lucide-trash-2',
-    action: () => {
-      eventsStore.deleteFundraiser(eventId.value, fundraiserId.value)
+    action: async () => {
+      await eventsStore.deleteFundraiser(eventId.value, fundraiserId.value)
       navigateTo(`/events/${eventId.value}`)
     },
   })
@@ -131,10 +146,7 @@ function confirmDeleteFundraiser() {
         <!-- Back + actions -->
         <div class="mb-4 flex items-center justify-between">
           <UButton icon="i-lucide-arrow-left" :label="event.name" color="neutral" variant="ghost" :to="`/events/${eventId}`" />
-          <div class="flex items-center gap-2">
-            <UButton icon="i-lucide-dollar-sign" label="Add Donation" variant="soft" @click="donationModalOpen = true" />
-            <UButton icon="i-lucide-trash-2" color="error" variant="ghost" size="sm" @click="confirmDeleteFundraiser" />
-          </div>
+          <UButton v-if="canManage" icon="i-lucide-trash-2" color="error" variant="ghost" size="sm" @click="confirmDeleteFundraiser" />
         </div>
 
         <!-- Fundraiser header -->
@@ -181,7 +193,7 @@ function confirmDeleteFundraiser() {
         <!-- Filter bar + Redeems -->
         <div class="mb-4 flex items-center justify-between">
           <h2 class="text-lg font-semibold">Redeems</h2>
-          <UButton icon="i-lucide-plus" size="sm" @click="catalogModalOpen = true" />
+          <UButton v-if="isOwner" icon="i-lucide-plus" size="sm" @click="catalogModalOpen = true" />
         </div>
 
         <div class="flex gap-6">
@@ -253,9 +265,10 @@ function confirmDeleteFundraiser() {
               </div>
               <h3 class="mt-3 text-base font-semibold">No redeems yet</h3>
               <p class="mt-1 max-w-sm text-sm text-[var(--ui-text-muted)]">
-                Add a redeem from this fundraiser's reward catalog.
+                {{ isOwner ? 'Add a redeem from this fundraiser\'s reward catalog.' : 'No redeems have been added yet.' }}
               </p>
               <UButton
+                v-if="isOwner"
                 class="mt-3"
                 icon="i-lucide-plus"
                 label="Add Redeem"
@@ -289,14 +302,6 @@ function confirmDeleteFundraiser() {
       :event-id="eventId"
       :fundraiser-id="fundraiserId"
       :catalog-ids="fundraiser.rewardCatalogIds"
-    />
-
-    <EventsDonationModal
-      v-if="fundraiser"
-      v-model:open="donationModalOpen"
-      :event-id="eventId"
-      :fundraiser-id="fundraiserId"
-      :fundraiser-name="fundraiser.name"
     />
 
     <ConfirmModal

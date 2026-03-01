@@ -3,7 +3,11 @@
     "allow": [
       "Bash(npx nuxi prepare)",
       "mcp__claude_ai_Nuxt_UI__get-component-metadata",
-      "Bash(xargs grep -l \"step\\\\|wizard\\\\|form.*multi\")"
+      "Bash(xargs grep -l \"step\\\\|wizard\\\\|form.*multi\")",
+      "Bash(npm install nuxt-auth-utils drizzle-orm postgres)",
+      "Bash(ls \"c:/Users/Alexi/Documents/devprojects/test/challenge-rewards/\"*.lock \"c:/Users/Alexi/Documents/devprojects/test/challenge-rewards/\".*rc)",
+      "Bash(pnpm add nuxt-auth-utils drizzle-orm postgres)",
+      "Bash(PGPASSWORD=postgres \"/c/Program Files/PostgreSQL/17/bin/psql.exe\" -U postgres -h localhost -d challenge_rewards -c \"UPDATE users SET is_admin = true WHERE email = ''alexis@affilium.io'';\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\Alexi\\Documents\\devprojects\\test\\challenge-rewards\\app\\pages\\events\\[id]"

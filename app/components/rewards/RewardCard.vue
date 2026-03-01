@@ -33,7 +33,7 @@ function confirmDelete() {
     color: 'error',
     confirmLabel: 'Delete',
     confirmIcon: 'i-lucide-trash-2',
-    action: () => store.deleteReward(props.reward.id),
+    action: async () => await store.deleteReward(props.reward.id),
   })
 }
 

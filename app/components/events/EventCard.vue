@@ -60,7 +60,7 @@ const statusColor = computed(() => {
         <div class="flex items-center justify-between text-xs text-[var(--ui-text-muted)]">
           <span class="inline-flex items-center gap-1">
             <UIcon name="i-lucide-users" class="size-3" />
-            {{ event.fundraisers.length }} fundraiser{{ event.fundraisers.length !== 1 ? 's' : '' }}
+            {{ event.fundraiserCount ?? event.fundraisers.length }} fundraiser{{ (event.fundraiserCount ?? event.fundraisers.length) !== 1 ? 's' : '' }}
           </span>
           <span v-if="event.donationUrl" class="inline-flex items-center gap-1 text-[var(--ui-primary)]">
             <UIcon name="i-lucide-external-link" class="size-3" />

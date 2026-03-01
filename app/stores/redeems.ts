@@ -1,15 +1,12 @@
 import type {
   Redeem,
-  CreateRedeemPayload,
 } from '~/types/redeems'
 import type { RewardCategory } from '~/types/rewards'
-import presetData from '~/data/redeem-presets.json'
-import * as ra from '~/utils/redeem-actions'
 
 export const useRedeemsStore = defineStore('redeems', {
   state: () => ({
     redeems: [] as Redeem[],
-    seeded: false,
+    loading: false,
     searchQuery: '',
     categoryFilter: null as RewardCategory | null,
     statusFilter: 'all' as 'all' | 'active' | 'completed',
@@ -101,60 +98,50 @@ export const useRedeemsStore = defineStore('redeems', {
   },
 
   actions: {
-    migrateCategories() {
-      const categoryMap = new Map<string, RewardCategory>()
-      for (const p of presetData.presets) {
-        categoryMap.set(p.rewardName, p.category as RewardCategory)
+    async fetchRedeems() {
+      this.loading = true
+      try {
+        this.redeems = await $fetch<Redeem[]>('/api/redeems')
       }
-      for (const r of this.redeems) {
-        if (!r.category) {
-          ;(r as any).category = categoryMap.get(r.rewardName) || 'challenge'
-        }
+      finally {
+        this.loading = false
       }
     },
 
-    seedDefaultRedeems() {
-      if (this.seeded) return
-      const defaults: CreateRedeemPayload[] = [
-        { type: 'timed', category: 'fitness', redeemer: 'Alex', rewardName: 'Sprint Interval', requiredMs: 30000 },
-        { type: 'timed', category: 'challenge', redeemer: 'Jordan', rewardName: 'Big Climb', requiredMs: 300000 },
-        { type: 'counter', category: 'fitness', redeemer: 'Alex', rewardName: 'Power Surge', targetCount: 5 },
-        { type: 'toggle', category: 'fitness', redeemer: 'Sam', rewardName: 'Attack Mode' },
-        { type: 'timed', category: 'fitness', redeemer: 'Jordan', rewardName: 'Out of Saddle', requiredMs: 60000 },
-        { type: 'banked', category: 'wellness', redeemer: 'Alex', rewardName: 'Hydration Lap', quantity: 5 },
-        { type: 'instant', category: 'challenge', redeemer: 'Sam', rewardName: 'Shortest Path to Summit' },
-        { type: 'timed', category: 'performance', redeemer: 'Sam', rewardName: 'High Cadence', requiredMs: 120000 },
-        { type: 'counter', category: 'performance', redeemer: 'Jordan', rewardName: 'Single Leg Drill', targetCount: 6 },
-      ]
-      for (const payload of defaults) {
-        this.addRedeem(payload)
-      }
-      this.seeded = true
+    // Generic redeem action helper — looks up fundraiserId from the redeem
+    async _redeemAction(id: string, action: string, params?: Record<string, any>) {
+      const redeem = this.redeems.find(r => r.id === id)
+      if (!redeem?.fundraiserId) return
+      await $fetch(`/api/fundraisers/${redeem.fundraiserId}/redeems/${id}`, {
+        method: 'PATCH',
+        body: { action, ...params },
+      })
+      await this.fetchRedeems()
     },
 
-    addRedeem(payload: CreateRedeemPayload) {
-      ra.createRedeem(this.redeems, payload)
+    async startTimer(id: string) { return this._redeemAction(id, 'startTimer') },
+    async pauseTimer(id: string) { return this._redeemAction(id, 'pauseTimer') },
+    async completeTimer(id: string) { return this._redeemAction(id, 'completeTimer') },
+
+    async consumeBanked(id: string) { return this._redeemAction(id, 'consumeBanked') },
+    async addToBanked(id: string, amount: number = 1) { return this._redeemAction(id, 'addToBanked', { amount }) },
+
+    async completeInstant(id: string) { return this._redeemAction(id, 'completeInstant') },
+
+    async incrementCounter(id: string) { return this._redeemAction(id, 'incrementCounter') },
+    async decrementCounter(id: string) { return this._redeemAction(id, 'decrementCounter') },
+
+    async activateToggle(id: string) { return this._redeemAction(id, 'activateToggle') },
+    async deactivateToggle(id: string) { return this._redeemAction(id, 'deactivateToggle') },
+
+    async deleteRedeem(id: string) {
+      const redeem = this.redeems.find(r => r.id === id)
+      if (!redeem?.fundraiserId) return
+      await $fetch(`/api/fundraisers/${redeem.fundraiserId}/redeems/${id}`, { method: 'DELETE' })
+      await this.fetchRedeems()
     },
 
-    startTimer(id: string) { ra.startTimer(this.redeems, id) },
-    pauseTimer(id: string) { ra.pauseTimer(this.redeems, id) },
-    completeTimer(id: string) { ra.completeTimer(this.redeems, id) },
-
-    consumeBanked(id: string) { ra.consumeBanked(this.redeems, id) },
-    addToBanked(id: string, amount: number = 1) { ra.addToBanked(this.redeems, id, amount) },
-
-    completeInstant(id: string) { ra.completeInstant(this.redeems, id) },
-
-    incrementCounter(id: string) { ra.incrementCounter(this.redeems, id) },
-    decrementCounter(id: string) { ra.decrementCounter(this.redeems, id) },
-
-    activateToggle(id: string) { ra.activateToggle(this.redeems, id) },
-    deactivateToggle(id: string) { ra.deactivateToggle(this.redeems, id) },
-
-    deleteRedeem(id: string) { ra.deleteRedeem(this.redeems, id) },
-    resetRedeem(id: string) { ra.resetRedeem(this.redeems, id) },
-    updateNote(id: string, note: string) { ra.updateNote(this.redeems, id, note) },
+    async resetRedeem(id: string) { return this._redeemAction(id, 'resetRedeem') },
+    async updateNote(id: string, note: string) { return this._redeemAction(id, 'updateNote', { note }) },
   },
-
-  persist: true,
 })

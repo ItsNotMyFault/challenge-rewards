@@ -5,6 +5,7 @@ export type EventStatus = 'draft' | 'active' | 'completed'
 export interface Fundraiser {
   id: string
   eventId: string
+  userId: number | null
   name: string
   avatarColor: string
   goal: number
@@ -25,6 +26,8 @@ export interface GameEvent {
   donationUrl: string
   status: EventStatus
   fundraisers: Fundraiser[]
+  fundraiserCount?: number
+  raised?: number
   createdAt: string
   updatedAt: string
 }

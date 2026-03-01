@@ -3,6 +3,7 @@ import type { ToggleRedeem } from '~/types/redeems'
 
 const props = defineProps<{
   redeem: ToggleRedeem
+  readonly?: boolean
 }>()
 
 const actions = useRedeemActions()
@@ -64,7 +65,7 @@ function toggle(value: boolean) {
         </span>
         <USwitch
           :model-value="isActive"
-          :disabled="redeem.status === 'completed'"
+          :disabled="redeem.status === 'completed' || readonly"
           @update:model-value="toggle"
         />
       </div>

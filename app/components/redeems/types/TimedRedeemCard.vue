@@ -3,6 +3,7 @@ import type { TimedRedeem } from '~/types/redeems'
 
 const props = defineProps<{
   redeem: TimedRedeem
+  readonly?: boolean
 }>()
 
 const actions = useRedeemActions()
@@ -43,7 +44,7 @@ watch(remainingMs, (val) => {
       <span class="font-mono tabular-nums">{{ formattedRemaining }} left</span>
     </div>
 
-    <div v-if="redeem.status !== 'completed'" class="flex gap-2">
+    <div v-if="redeem.status !== 'completed' && !readonly" class="flex gap-2">
       <UButton
         v-if="!isRunning"
         icon="i-lucide-play"

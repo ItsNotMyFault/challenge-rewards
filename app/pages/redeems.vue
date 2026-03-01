@@ -3,10 +3,8 @@ import type { RewardCategory } from '~/types/rewards'
 
 const store = useRedeemsStore()
 const { categoryColors, allCategories } = useRewardHelpers()
-const addModalOpen = ref(false)
 
-store.seedDefaultRedeems()
-store.migrateCategories()
+await useAsyncData('redeems', () => store.fetchRedeems())
 
 function toggleCategoryFilter(c: RewardCategory) {
   store.categoryFilter = store.categoryFilter === c ? null : c
@@ -81,7 +79,6 @@ const statusTabs = [
               </div>
 
               <div class="flex-1" />
-              <UButton icon="i-lucide-plus" size="sm" @click="addModalOpen = true" />
             </div>
 
             <!-- Row 2: search -->
@@ -118,14 +115,8 @@ const statusTabs = [
             </div>
             <h3 class="mt-4 text-lg font-semibold">No redeems found</h3>
             <p class="mt-1 max-w-sm text-sm text-[var(--ui-text-muted)]">
-              Add a new redeem to get started, or adjust your filters.
+              No redeems yet. Join an event as a fundraiser to start tracking redeems.
             </p>
-            <UButton
-              class="mt-4"
-              icon="i-lucide-plus"
-              label="Add Redeem"
-              @click="addModalOpen = true"
-            />
           </div>
         </div>
 
@@ -138,7 +129,6 @@ const statusTabs = [
       </div>
     </div>
 
-    <RedeemsRewardCatalogModal v-model:open="addModalOpen" />
   </div>
 </template>
 

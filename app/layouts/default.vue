@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
+const { loggedIn, user, clear: logout } = useUserSession()
 const eventsStore = useEventsStore()
+
+// Fetch events for nav dropdown (non-blocking)
+callOnce(() => eventsStore.fetchEvents())
 
 const navItems = computed<NavigationMenuItem[]>(() => [
   {
@@ -30,11 +34,6 @@ const navItems = computed<NavigationMenuItem[]>(() => [
     ],
   },
   {
-    label: 'Rewards',
-    icon: 'i-lucide-gift',
-    to: '/rewards',
-  },
-  {
     label: 'Redeems',
     icon: 'i-lucide-trophy',
     to: '/redeems',
@@ -58,7 +57,49 @@ const navItems = computed<NavigationMenuItem[]>(() => [
           content-orientation="vertical"
         />
 
-        <UColorModeButton size="sm" />
+        <div class="flex items-center gap-2">
+          <UColorModeButton size="sm" />
+
+          <template v-if="loggedIn && user">
+            <UDropdownMenu
+              :items="[
+                [{
+                  label: user.name,
+                  icon: 'i-lucide-user',
+                  disabled: true,
+                }],
+                ...(user.isAdmin ? [[{
+                  label: 'Admin',
+                  icon: 'i-lucide-shield',
+                  disabled: true,
+                }]] : []),
+                [{
+                  label: 'Sign out',
+                  icon: 'i-lucide-log-out',
+                  onSelect: () => logout(),
+                }],
+              ]"
+            >
+              <UButton color="neutral" variant="ghost" size="sm">
+                <UAvatar
+                  :src="user.avatarUrl ?? undefined"
+                  :alt="user.name"
+                  size="2xs"
+                />
+              </UButton>
+            </UDropdownMenu>
+          </template>
+
+          <UButton
+            v-else
+            to="/login"
+            icon="i-lucide-log-in"
+            label="Sign in"
+            color="neutral"
+            variant="ghost"
+            size="sm"
+          />
+        </div>
       </div>
     </header>
 

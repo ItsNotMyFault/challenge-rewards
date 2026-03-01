@@ -5,16 +5,11 @@ import type {
   UpdateRewardPayload,
 } from '~/types/rewards'
 import type { RedeemType } from '~/types/redeems'
-import presetData from '~/data/redeem-presets.json'
-
-function generateId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
-}
 
 export const useRewardsStore = defineStore('rewards', {
   state: () => ({
     rewards: [] as RewardTemplate[],
-    seeded: false,
+    loading: false,
     searchQuery: '',
     categoryFilter: null as RewardCategory | null,
     typeFilter: null as RedeemType | null,
@@ -50,42 +45,31 @@ export const useRewardsStore = defineStore('rewards', {
   },
 
   actions: {
-    seedFromPresets() {
-      if (this.seeded) return
-      const now = new Date().toISOString()
-      for (const preset of presetData.presets) {
-        this.rewards.push({
-          ...preset,
-          createdAt: now,
-          updatedAt: now,
-        } as RewardTemplate)
+    async fetchRewards() {
+      this.loading = true
+      try {
+        this.rewards = await $fetch<RewardTemplate[]>('/api/rewards')
       }
-      this.seeded = true
+      finally {
+        this.loading = false
+      }
     },
 
-    addReward(payload: CreateRewardPayload): string {
-      const now = new Date().toISOString()
-      const id = generateId()
-      this.rewards.push({
-        ...payload,
-        id,
-        createdAt: now,
-        updatedAt: now,
-      } as RewardTemplate)
-      return id
+    async addReward(payload: CreateRewardPayload): Promise<string> {
+      const data = await $fetch<any>('/api/rewards', { method: 'POST', body: payload })
+      await this.fetchRewards()
+      return String(data.id)
     },
 
-    updateReward(id: string, payload: UpdateRewardPayload) {
-      const r = this.rewards.find(r => r.id === id)
-      if (!r) return
-      Object.assign(r, payload, { updatedAt: new Date().toISOString() })
+    async updateReward(id: string, payload: UpdateRewardPayload) {
+      await $fetch(`/api/rewards/${id}`, { method: 'PATCH', body: payload })
+      await this.fetchRewards()
     },
 
-    deleteReward(id: string) {
+    async deleteReward(id: string) {
+      await $fetch(`/api/rewards/${id}`, { method: 'DELETE' })
       const idx = this.rewards.findIndex(r => r.id === id)
       if (idx !== -1) this.rewards.splice(idx, 1)
     },
   },
-
-  persist: true,
 })

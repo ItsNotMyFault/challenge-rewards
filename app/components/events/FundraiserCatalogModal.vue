@@ -75,7 +75,7 @@ function validate(): FormError[] {
   return errors
 }
 
-function onSubmit() {
+async function onSubmit() {
   const preset = selectedPreset.value
   if (!preset) return
 
@@ -88,19 +88,19 @@ function onSubmit() {
 
   switch (preset.type) {
     case 'timed':
-      eventsStore.addFundraiserRedeem(props.eventId, props.fundraiserId, { ...base, type: 'timed', requiredMs: state.requiredMinutes * 60 * 1000 })
+      await eventsStore.addFundraiserRedeem(props.eventId, props.fundraiserId, { ...base, type: 'timed', requiredMs: state.requiredMinutes * 60 * 1000 })
       break
     case 'banked':
-      eventsStore.addFundraiserRedeem(props.eventId, props.fundraiserId, { ...base, type: 'banked', quantity: state.quantity })
+      await eventsStore.addFundraiserRedeem(props.eventId, props.fundraiserId, { ...base, type: 'banked', quantity: state.quantity })
       break
     case 'instant':
-      eventsStore.addFundraiserRedeem(props.eventId, props.fundraiserId, { ...base, type: 'instant' })
+      await eventsStore.addFundraiserRedeem(props.eventId, props.fundraiserId, { ...base, type: 'instant' })
       break
     case 'counter':
-      eventsStore.addFundraiserRedeem(props.eventId, props.fundraiserId, { ...base, type: 'counter', targetCount: state.targetCount })
+      await eventsStore.addFundraiserRedeem(props.eventId, props.fundraiserId, { ...base, type: 'counter', targetCount: state.targetCount })
       break
     case 'toggle':
-      eventsStore.addFundraiserRedeem(props.eventId, props.fundraiserId, { ...base, type: 'toggle' })
+      await eventsStore.addFundraiserRedeem(props.eventId, props.fundraiserId, { ...base, type: 'toggle' })
       break
   }
 

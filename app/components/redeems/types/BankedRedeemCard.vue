@@ -3,6 +3,7 @@ import type { BankedRedeem } from '~/types/redeems'
 
 defineProps<{
   redeem: BankedRedeem
+  readonly?: boolean
 }>()
 
 const actions = useRedeemActions()
@@ -30,7 +31,7 @@ const actions = useRedeemActions()
       </div>
     </div>
 
-    <div v-if="redeem.status !== 'completed'" class="flex gap-2">
+    <div v-if="redeem.status !== 'completed' && !readonly" class="flex gap-2">
       <UButton
         icon="i-lucide-minus"
         label="Consume"

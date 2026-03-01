@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { GameEvent } from '~/types/events'
 
+const { user } = useUserSession()
 const store = useEventsStore()
 const formModalOpen = ref(false)
 const editingEvent = ref<GameEvent | null>(null)
 
-store.seedDefaultEvent()
+const isAdmin = computed(() => user.value?.isAdmin === true)
+
+await useAsyncData('events', () => store.fetchEvents())
 
 function openCreate() {
   editingEvent.value = null
@@ -24,7 +27,7 @@ function openCreate() {
           <h1 class="text-xl font-bold">Events</h1>
           <UBadge v-if="store.events.length > 0" :label="`${store.events.length}`" color="neutral" variant="subtle" size="sm" />
         </div>
-        <UButton icon="i-lucide-plus" label="Create Event" @click="openCreate" />
+        <UButton v-if="isAdmin" icon="i-lucide-plus" label="Create Event" @click="openCreate" />
       </div>
 
       <!-- Event grid -->
@@ -51,14 +54,8 @@ function openCreate() {
         </div>
         <h3 class="mt-4 text-lg font-semibold">No events yet</h3>
         <p class="mt-1 max-w-sm text-sm text-[var(--ui-text-muted)]">
-          Create your first fundraising event to get started.
+          {{ isAdmin ? 'Create your first fundraising event to get started.' : 'No events have been created yet.' }}
         </p>
-        <UButton
-          class="mt-4"
-          icon="i-lucide-plus"
-          label="Create Event"
-          @click="openCreate"
-        />
       </div>
     </div>
 

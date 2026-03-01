@@ -89,15 +89,15 @@ function buildPayload() {
   }
 }
 
-function onSubmit() {
+async function onSubmit() {
   const payload = buildPayload()
 
   if (isEditing.value && props.reward) {
-    store.updateReward(props.reward.id, payload)
+    await store.updateReward(props.reward.id, payload)
     toast.add({ title: 'Reward updated', color: 'success' })
   }
   else {
-    store.addReward(payload)
+    await store.addReward(payload)
     toast.add({ title: 'Reward created', color: 'success' })
   }
 

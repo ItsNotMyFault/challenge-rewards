@@ -6,6 +6,9 @@ const props = defineProps<{
   eventId: string
 }>()
 
+const { user } = useUserSession()
+const isYou = computed(() => !!user.value && props.fundraiser.userId === user.value.id)
+
 const progress = computed(() => {
   if (props.fundraiser.goal <= 0) return 0
   return Math.min((props.fundraiser.raised / props.fundraiser.goal) * 100, 100)
@@ -42,7 +45,10 @@ const avatarClasses = computed(() => {
   <NuxtLink :to="`/events/${eventId}/fundraisers/${fundraiser.id}`" class="block">
     <UCard
       variant="outline"
-      class="transition-all duration-200 hover:shadow-lg hover:shadow-[var(--ui-primary)]/5"
+      :class="[
+        'transition-all duration-200 hover:shadow-lg hover:shadow-[var(--ui-primary)]/5',
+        isYou && 'ring-2 ring-[var(--ui-primary)]/40',
+      ]"
       :ui="{ root: 'h-full flex flex-col', body: 'flex-1' }"
     >
       <template #header>
@@ -56,7 +62,10 @@ const avatarClasses = computed(() => {
             {{ initials }}
           </span>
           <div class="min-w-0 flex-1">
-            <h3 class="truncate text-sm font-bold leading-tight">{{ fundraiser.name }}</h3>
+            <h3 class="flex items-center gap-1.5 text-sm font-bold leading-tight">
+              <span class="truncate">{{ fundraiser.name }}</span>
+              <span v-if="isYou" class="shrink-0 text-xs font-normal text-[var(--ui-primary)]">(me)</span>
+            </h3>
             <div class="mt-1 flex items-center gap-2">
               <a
                 v-if="fundraiser.twitchUrl"
@@ -93,14 +102,18 @@ const avatarClasses = computed(() => {
 
       <template #footer>
         <div class="flex items-center justify-between text-xs text-[var(--ui-text-muted)]">
-          <span class="inline-flex items-center gap-1">
-            <UIcon name="i-lucide-gift" class="size-3" />
-            {{ fundraiser.rewardCatalogIds.length }} reward{{ fundraiser.rewardCatalogIds.length !== 1 ? 's' : '' }}
-          </span>
-          <span v-if="activeRedeems > 0" class="inline-flex items-center gap-1">
-            <UIcon name="i-lucide-trophy" class="size-3" />
-            {{ activeRedeems }} active
-          </span>
+          <UTooltip text="Rewards available in this fundraiser's catalog">
+            <span class="inline-flex items-center gap-1">
+              <UIcon name="i-lucide-gift" class="size-3" />
+              {{ fundraiser.rewardCatalogIds.length }} reward{{ fundraiser.rewardCatalogIds.length !== 1 ? 's' : '' }}
+            </span>
+          </UTooltip>
+          <UTooltip v-if="activeRedeems > 0" text="Redeems currently in progress">
+            <span class="inline-flex items-center gap-1">
+              <UIcon name="i-lucide-trophy" class="size-3" />
+              {{ activeRedeems }} active
+            </span>
+          </UTooltip>
         </div>
       </template>
     </UCard>

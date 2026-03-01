@@ -10,8 +10,6 @@ const toast = useToast()
 const { typeIcon, typeLabel, typeColors } = useRedeemHelpers()
 const { allCategories, categoryColors, categoryLabel } = useRewardHelpers()
 
-rewardsStore.seedFromPresets()
-
 const step = ref<1 | 2>(1)
 const selectedReward = ref<RewardTemplate | null>(null)
 const searchQuery = ref('')

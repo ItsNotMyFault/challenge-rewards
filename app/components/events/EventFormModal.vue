@@ -19,14 +19,14 @@ const state = reactive({
   donationUrl: '',
 })
 
-watch(() => props.event, (evt) => {
-  if (evt) {
-    state.name = evt.name
-    state.description = evt.description
-    state.goal = evt.goal
-    state.donationUrl = evt.donationUrl
+watch(open, (isOpen) => {
+  if (isOpen && props.event) {
+    state.name = props.event.name
+    state.description = props.event.description
+    state.goal = props.event.goal
+    state.donationUrl = props.event.donationUrl
   }
-  else {
+  else if (isOpen) {
     resetState()
   }
 })
@@ -45,9 +45,9 @@ function validate(): FormError[] {
   return errors
 }
 
-function onSubmit() {
+async function onSubmit() {
   if (isEditing.value && props.event) {
-    store.updateEvent(props.event.id, {
+    await store.updateEvent(props.event.id, {
       name: state.name.trim(),
       description: state.description.trim(),
       goal: state.goal,
@@ -56,7 +56,7 @@ function onSubmit() {
     toast.add({ title: 'Event updated', color: 'success' })
   }
   else {
-    store.createEvent({
+    await store.createEvent({
       name: state.name.trim(),
       description: state.description.trim(),
       goal: state.goal,

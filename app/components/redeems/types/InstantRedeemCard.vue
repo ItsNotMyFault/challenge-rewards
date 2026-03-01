@@ -3,6 +3,7 @@ import type { InstantRedeem } from '~/types/redeems'
 
 const props = defineProps<{
   redeem: InstantRedeem
+  readonly?: boolean
 }>()
 
 const actions = useRedeemActions()
@@ -28,6 +29,7 @@ const { relativeTime } = useRedeemHelpers()
     <!-- Active state - prominent CTA -->
     <div v-else class="flex flex-col items-center py-3">
       <UButton
+        v-if="!readonly"
         icon="i-lucide-zap"
         label="Mark Complete"
         color="success"
@@ -35,6 +37,7 @@ const { relativeTime } = useRedeemHelpers()
         block
         @click="actions.completeInstant(redeem.id)"
       />
+      <span v-else class="text-sm text-[var(--ui-text-muted)]">Pending</span>
     </div>
   </div>
 </template>

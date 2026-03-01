@@ -6,6 +6,7 @@ export type RedeemStatus = 'active' | 'completed' | 'paused'
 
 export interface BaseRedeem {
   id: string
+  fundraiserId?: string
   type: RedeemType
   category: RewardCategory
   redeemer: string

@@ -2,13 +2,19 @@
 import type { StepperItem } from '@nuxt/ui'
 import presetData from '~/data/redeem-presets.json'
 
+definePageMeta({ middleware: 'auth' })
+
 const route = useRoute()
 const store = useEventsStore()
 const toast = useToast()
+const { user } = useUserSession()
 const { allCategories, categoryColors } = useRewardHelpers()
 const { typeIcon, typeLabel, typeColors } = useRedeemHelpers()
 
 const eventId = computed(() => route.params.id as string)
+
+await useAsyncData(`event-${eventId.value}`, () => store.fetchEvent(eventId.value))
+
 const event = computed(() => store.getEvent(eventId.value))
 
 const stepper = useTemplateRef('stepper')
@@ -35,7 +41,7 @@ const steps: StepperItem[] = [
 ]
 
 // Form state
-const name = ref('')
+const name = ref(user.value?.name ?? '')
 const goal = ref(500)
 const twitchUrl = ref('')
 const donationUrl = ref('')
@@ -92,8 +98,8 @@ function nextFromRewards() {
   stepper.value?.next()
 }
 
-function submit() {
-  const id = store.addFundraiser(eventId.value, {
+async function submit() {
+  const id = await store.addFundraiser(eventId.value, {
     name: name.value.trim(),
     goal: goal.value,
     twitchUrl: twitchUrl.value.trim(),
@@ -101,10 +107,8 @@ function submit() {
     rewardCatalogIds: [...selectedPresetIds.value],
   })
 
-  if (id) {
-    toast.add({ title: 'Welcome aboard!', description: `You've joined ${event.value?.name} as a fundraiser.`, color: 'success' })
-    navigateTo(`/events/${eventId.value}/fundraisers/${id}`)
-  }
+  toast.add({ title: 'Welcome aboard!', description: `You've joined ${event.value?.name} as a fundraiser.`, color: 'success' })
+  navigateTo(`/events/${eventId.value}/fundraisers/${id}`)
 }
 
 function formatCurrency(value: number): string {
