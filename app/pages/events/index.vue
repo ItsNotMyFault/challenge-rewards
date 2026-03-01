@@ -8,7 +8,7 @@ const editingEvent = ref<GameEvent | null>(null)
 
 const isAdmin = computed(() => user.value?.isAdmin === true)
 
-await useAsyncData('events', () => store.fetchEvents())
+await store.fetchEvents()
 
 function openCreate() {
   editingEvent.value = null

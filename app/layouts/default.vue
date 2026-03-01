@@ -5,40 +5,74 @@ const { loggedIn, user, clear: logout } = useUserSession()
 const eventsStore = useEventsStore()
 
 // Fetch events for nav dropdown (non-blocking)
+// Initial fetch
 callOnce(() => eventsStore.fetchEvents())
+// Re-fetch when login state changes (myFundraiserId depends on session)
+watch(loggedIn, () => eventsStore.fetchEvents())
 
-const navItems = computed<NavigationMenuItem[]>(() => [
-  {
-    label: 'Challenges',
-    icon: 'i-lucide-git-branch',
-    to: '/challenges',
-  },
-  {
-    label: 'Events',
-    icon: 'i-lucide-calendar-heart',
-    to: '/events',
-    children: [
-      ...eventsStore.events.map(e => ({
-        label: e.name,
-        icon: e.status === 'active' ? 'i-lucide-radio' : e.status === 'completed' ? 'i-lucide-check-circle' : 'i-lucide-pencil',
-        to: `/events/${e.id}`,
-      })),
-      ...(eventsStore.events.length > 0
-        ? [{ label: '', icon: '', disabled: true } as any]
-        : []),
-      {
-        label: 'All Events',
-        icon: 'i-lucide-list',
-        to: '/events',
-      },
-    ],
-  },
-  {
-    label: 'Redeems',
-    icon: 'i-lucide-trophy',
-    to: '/redeems',
-  },
-])
+const myFundraisers = computed(() => {
+  return eventsStore.events
+    .filter(e => e.myFundraiserId)
+    .map(e => ({
+      eventId: e.id,
+      eventName: e.name,
+      fundraiserId: e.myFundraiserId!,
+    }))
+})
+
+const navItems = computed<NavigationMenuItem[]>(() => {
+  const items: NavigationMenuItem[] = [
+    {
+      label: 'Challenges',
+      icon: 'i-lucide-git-branch',
+      to: '/challenges',
+    },
+    {
+      label: 'Events',
+      icon: 'i-lucide-calendar-heart',
+      to: '/events',
+      children: [
+        ...eventsStore.events.map(e => ({
+          label: e.name,
+          icon: e.status === 'active' ? 'i-lucide-radio' : e.status === 'completed' ? 'i-lucide-check-circle' : 'i-lucide-pencil',
+          to: `/events/${e.id}`,
+        })),
+        ...(eventsStore.events.length > 0
+          ? [{ label: '', icon: '', disabled: true } as any]
+          : []),
+        {
+          label: 'All Events',
+          icon: 'i-lucide-list',
+          to: '/events',
+        },
+      ],
+    },
+  ]
+
+  if (loggedIn.value && myFundraisers.value.length > 0) {
+    if (myFundraisers.value.length === 1) {
+      const f = myFundraisers.value[0]!
+      items.push({
+        label: 'My Redeems',
+        icon: 'i-lucide-trophy',
+        to: `/events/${f.eventId}/fundraisers/${f.fundraiserId}`,
+      })
+    }
+    else {
+      items.push({
+        label: 'My Redeems',
+        icon: 'i-lucide-trophy',
+        children: myFundraisers.value.map(f => ({
+          label: f.eventName,
+          icon: 'i-lucide-calendar-heart',
+          to: `/events/${f.eventId}/fundraisers/${f.fundraiserId}`,
+        })),
+      })
+    }
+  }
+
+  return items
+})
 </script>
 
 <template>

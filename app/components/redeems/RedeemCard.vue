@@ -56,7 +56,7 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
     variant="outline"
     :class="[
       'border-l-3 transition-all duration-200 hover:shadow-lg hover:shadow-[var(--ui-primary)]/5',
-      colors.border,
+      catColors.border,
     ]"
     :ui="{ root: 'h-full flex flex-col', body: 'flex-1' }"
   >
@@ -67,8 +67,8 @@ const menuItems = computed<DropdownMenuItem[][]>(() => [
           <span
             :class="[
               'flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-bold',
-              colors.bg,
-              colors.text,
+              catColors.bg,
+              catColors.text,
             ]"
           >
             {{ initials }}

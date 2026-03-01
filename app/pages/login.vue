@@ -3,7 +3,7 @@ const { loggedIn } = useUserSession()
 
 // Redirect if already logged in
 if (loggedIn.value) {
-  navigateTo('/')
+  navigateTo('/events')
 }
 </script>
 

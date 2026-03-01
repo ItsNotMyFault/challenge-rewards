@@ -28,6 +28,7 @@ export interface GameEvent {
   fundraisers: Fundraiser[]
   fundraiserCount?: number
   raised?: number
+  myFundraiserId?: string | null
   createdAt: string
   updatedAt: string
 }

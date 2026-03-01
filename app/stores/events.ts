@@ -53,6 +53,7 @@ export const useEventsStore = defineStore('events', {
           fundraisers: this.events.find(ex => ex.id === e.id)?.fundraisers ?? [],
           fundraiserCount: e.fundraiserCount,
           raised: e.raised,
+          myFundraiserId: e.myFundraiserId ?? null,
           createdAt: e.createdAt,
           updatedAt: e.updatedAt,
         }))
@@ -64,12 +65,20 @@ export const useEventsStore = defineStore('events', {
 
     async fetchEvent(id: string) {
       const data = await $fetch<GameEvent>(`/api/events/${id}`)
+      const fundraiserCount = data.fundraisers?.length ?? 0
+      const raised = data.fundraisers?.reduce((sum, f) => sum + f.raised, 0) ?? 0
       const idx = this.events.findIndex(e => e.id === id)
       if (idx !== -1) {
-        this.events[idx] = data
+        const existing = this.events[idx]!
+        this.events[idx] = {
+          ...data,
+          myFundraiserId: existing.myFundraiserId,
+          fundraiserCount,
+          raised,
+        }
       }
       else {
-        this.events.push(data)
+        this.events.push({ ...data, fundraiserCount, raised })
       }
       return data
     },

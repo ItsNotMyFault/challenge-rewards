@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { RewardCategory } from '~/types/rewards'
 import { REDEEM_ACTIONS_KEY, CAN_MANAGE_REDEEMS_KEY, type RedeemActionInterface } from '~/composables/useRedeemActions'
+import presetData from '~/data/redeem-presets.json'
 
 const route = useRoute()
 const { user } = useUserSession()
 const eventsStore = useEventsStore()
 const confirm = useConfirmAction()
 const { categoryColors, allCategories } = useRewardHelpers()
+const { typeIcon, typeLabel, typeColors } = useRedeemHelpers()
 
 const eventId = computed(() => route.params.id as string)
 const fundraiserId = computed(() => route.params.fid as string)
@@ -48,6 +50,15 @@ provide(REDEEM_ACTIONS_KEY, redeemActions)
 provide(CAN_MANAGE_REDEEMS_KEY, isOwner)
 
 const catalogModalOpen = ref(false)
+const showDetails = ref(false)
+
+const presetMap = new Map(presetData.presets.map(p => [p.id, p]))
+const catalogRewards = computed(() => {
+  if (!fundraiser.value) return []
+  return fundraiser.value.rewardCatalogIds
+    .map(id => presetMap.get(id))
+    .filter(Boolean) as typeof presetData.presets
+})
 
 // Filters
 const searchQuery = ref('')
@@ -186,6 +197,43 @@ function confirmDeleteFundraiser() {
               </div>
 
               <EventsEventProgressBar :raised="fundraiser.raised" :goal="fundraiser.goal" />
+
+              <button
+                v-if="catalogRewards.length > 0"
+                class="flex cursor-pointer items-center gap-1 text-xs text-[var(--ui-text-muted)] hover:text-[var(--ui-text)]"
+                @click="showDetails = !showDetails"
+              >
+                <UIcon :name="showDetails ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'" class="size-3.5" />
+                {{ showDetails ? 'Hide details' : `Show details (${catalogRewards.length} reward${catalogRewards.length !== 1 ? 's' : ''})` }}
+              </button>
+            </div>
+          </div>
+
+          <div v-if="showDetails && catalogRewards.length > 0" class="mt-4 border-t border-[var(--ui-border)] pt-3">
+            <div class="grid gap-2 sm:grid-cols-2">
+              <div
+                v-for="reward in catalogRewards"
+                :key="reward.id"
+                class="flex items-center gap-2.5 rounded-lg bg-[var(--ui-bg)]/50 px-3 py-2 ring-1 ring-[var(--ui-border)]"
+              >
+                <span
+                  :class="[
+                    'flex size-7 shrink-0 items-center justify-center rounded-md',
+                    categoryColors(reward.category as any).bg,
+                  ]"
+                >
+                  <UIcon :name="reward.icon" :class="['size-3.5', categoryColors(reward.category as any).text]" />
+                </span>
+                <div class="min-w-0 flex-1">
+                  <div class="truncate text-xs font-medium">{{ reward.rewardName }}</div>
+                  <div class="truncate text-[10px] text-[var(--ui-text-muted)]">{{ reward.description }}</div>
+                </div>
+                <UBadge :label="typeLabel(reward.type as any)" color="neutral" variant="outline" size="xs">
+                  <template #leading>
+                    <UIcon :name="typeIcon(reward.type as any)" :class="['size-3', typeColors(reward.type as any).text]" />
+                  </template>
+                </UBadge>
+              </div>
             </div>
           </div>
         </div>
