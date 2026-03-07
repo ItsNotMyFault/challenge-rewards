@@ -236,7 +236,10 @@ const menuItems = computed(() => [
             class="hidden w-72 shrink-0 lg:block"
           >
             <div class="sticky top-4">
-              <RedeemsRedeemLeaderboard :redeems="allRedeems" />
+              <RedeemsRedeemLeaderboard
+                :redeems="allRedeems"
+                title="Redeem Count Leaderboard"
+              />
             </div>
           </div>
         </div>
