@@ -1,41 +1,59 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-html, body, #__nuxt {
+/* Override Nuxt UI CSS Variables for Light Theme */
+html,
+body,
+#__nuxt {
+  /* Light theme colors */
+  --ui-bg-default: #ffffff;
+  --ui-bg-elevated: #f3f4f6;
+  --ui-bg-accent: #f0f9ff;
+  --ui-bg-muted: #e5e7eb;
+  --ui-border: #e5e7eb;
+  --ui-border-accent: #bfdbfe;
+  --ui-text-default: #1f2937;
+  --ui-text-muted: #6b7280;
+  --ui-text-dimmed: #9ca3af;
+  --ui-primary: #3b82f6;
+  --ui-primary-text: #ffffff;
+
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 /* Header nav text visibility against sky */
 header [data-orientation] a,
 header [data-orientation] button {
   font-weight: 600;
-  text-shadow: 0 0 8px rgba(255,255,255,0.6);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 
 /* ===========================================
    LAYER 1: Sky → Pink/Red → Subtle dark
    =========================================== */
 #__nuxt {
-  background:
-    linear-gradient(
-      to bottom,
-      #B8DEF0 0%,
-      #87CEEB 8%,
-      #a8d4e8 18%,
-      #d4e8f0 25%,
-      #f0e0e2 32%,
-      #e8d0d4 40%,
-      #dcc0c5 50%,
-      #c8a8ae 60%,
-      #a88890 70%,
-      #886870 80%,
-      #604850 90%,
-      #3a2028 100%
-    );
+  background: linear-gradient(
+    to bottom,
+    #b8def0 0%,
+    #87ceeb 8%,
+    #a8d4e8 18%,
+    #d4e8f0 25%,
+    #f0e0e2 32%,
+    #e8d0d4 40%,
+    #dcc0c5 50%,
+    #c8a8ae 60%,
+    #a88890 70%,
+    #886870 80%,
+    #604850 90%,
+    #3a2028 100%
+  );
   background-attachment: fixed;
   background-size: 100% 100%;
 }
@@ -44,7 +62,7 @@ header [data-orientation] button {
    LAYER 2: Mountain silhouettes — subtle, peaky, smaller
    =========================================== */
 #__nuxt::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
@@ -72,7 +90,7 @@ header [data-orientation] button {
    LAYER 3: Clouds — below header, in sky zone
    =========================================== */
 #__nuxt::after {
-  content: '';
+  content: "";
   position: fixed;
   top: 56px;
   left: 0;
@@ -82,31 +100,156 @@ header [data-orientation] button {
   z-index: -1;
   background-image:
     /* Cloud 1 — large, left */
-    radial-gradient(ellipse 130px 55px at 15% 18%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 40%, transparent 70%),
-    radial-gradient(ellipse 95px 42px at 12% 22%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 50%, transparent 70%),
-    radial-gradient(ellipse 105px 48px at 19% 15%, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.2) 45%, transparent 70%),
-
+    radial-gradient(
+      ellipse 130px 55px at 15% 18%,
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(255, 255, 255, 0.25) 40%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 95px 42px at 12% 22%,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 105px 48px at 19% 15%,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.2) 45%,
+      transparent 70%
+    ),
     /* Cloud 2 — medium, center-left */
-    radial-gradient(ellipse 105px 42px at 35% 12%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.22) 45%, transparent 70%),
-    radial-gradient(ellipse 82px 36px at 32% 16%, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.18) 50%, transparent 70%),
-    radial-gradient(ellipse 88px 40px at 39% 10%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.15) 45%, transparent 70%),
-
+    radial-gradient(
+        ellipse 105px 42px at 35% 12%,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.22) 45%,
+        transparent 70%
+      ),
+    radial-gradient(
+      ellipse 82px 36px at 32% 16%,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.18) 50%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 88px 40px at 39% 10%,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.15) 45%,
+      transparent 70%
+    ),
     /* Cloud 3 — large, right */
-    radial-gradient(ellipse 145px 58px at 72% 15%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.22) 40%, transparent 70%),
-    radial-gradient(ellipse 105px 48px at 68% 20%, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.18) 45%, transparent 70%),
-    radial-gradient(ellipse 115px 50px at 76% 12%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.15) 45%, transparent 70%),
-
+    radial-gradient(
+        ellipse 145px 58px at 72% 15%,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.22) 40%,
+        transparent 70%
+      ),
+    radial-gradient(
+      ellipse 105px 48px at 68% 20%,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.18) 45%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 115px 50px at 76% 12%,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.15) 45%,
+      transparent 70%
+    ),
     /* Cloud 4 — small wispy, top-right */
-    radial-gradient(ellipse 90px 22px at 88% 8%, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.12) 50%, transparent 75%),
-    radial-gradient(ellipse 70px 18px at 91% 11%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 50%, transparent 75%),
-
+    radial-gradient(
+        ellipse 90px 22px at 88% 8%,
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0.12) 50%,
+        transparent 75%
+      ),
+    radial-gradient(
+      ellipse 70px 18px at 91% 11%,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 75%
+    ),
     /* Cloud 5 — small, far left */
-    radial-gradient(ellipse 68px 30px at 5% 10%, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.12) 50%, transparent 70%),
-    radial-gradient(ellipse 52px 24px at 8% 13%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 50%, transparent 70%),
-
+    radial-gradient(
+        ellipse 68px 30px at 5% 10%,
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0.12) 50%,
+        transparent 70%
+      ),
+    radial-gradient(
+      ellipse 52px 24px at 8% 13%,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 70%
+    ),
     /* Cloud 6 — medium, lower center */
-    radial-gradient(ellipse 95px 40px at 55% 30%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.15) 45%, transparent 70%),
-    radial-gradient(ellipse 78px 34px at 52% 34%, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.12) 50%, transparent 70%),
-    radial-gradient(ellipse 82px 36px at 58% 28%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 45%, transparent 70%);
+    radial-gradient(
+        ellipse 95px 40px at 55% 30%,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.15) 45%,
+        transparent 70%
+      ),
+    radial-gradient(
+      ellipse 78px 34px at 52% 34%,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.12) 50%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 82px 36px at 58% 28%,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0.1) 45%,
+      transparent 70%
+    );
   background-repeat: no-repeat;
+}
+
+/* Ensure light mode is applied globally */
+:root {
+  color-scheme: light;
+}
+
+html {
+  color-scheme: light;
+}
+
+/* Force all Nuxt UI cards and components to light theme */
+.dark,
+.dark * {
+  color-scheme: light !important;
+}
+
+/* UCard - Force white background on all card elements */
+[class*="ui-card"],
+.ui-card,
+.ui {
+  background-color: white !important;
+}
+
+/* Override any dark mode backgrounds */
+[class*="bg-gray-900"],
+[class*="bg-slate-900"],
+[class*="bg-gray-800"],
+[class*="dark:"] {
+  background-color: white !important;
+}
+
+/* Nuxt UI specific component backgrounds */
+.ui-card__body,
+.ui-card__header,
+.ui-card__footer,
+.ui-card__root {
+  background-color: white !important;
+  color: #1f2937;
+}
+
+/* Ensure all nested elements in cards are light */
+[class*="ui-card"] * {
+  background-color: inherit;
+}
+
+/* Force text color to be readable on light backgrounds */
+.ui-card,
+.ui-card *:not([class*="bg-"]):not([class*="text-"]) {
+  color: #1f2937;
 }
